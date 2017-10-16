@@ -30,13 +30,12 @@ export class SpotifyClient implements MusicApiClient {
    * @param query Track name to search for.
    * @return Promise that resolves with the list of matching albums.
    */
-  search(query: string): Promise<Track[]> {
+  async search(query: string): Promise<Track[]> {
     const encodedQuery = encodeURIComponent(query)
     const url = `${SEARCH_URL}?q=${encodedQuery}&type=track`
-    return (
-      this.fetch(url)
-        .then((r: Response) => r.json())
-        .then((json: SearchResponse) => this.deserialize(json)))
+    const response = await this.fetch(url)
+    const json = await response.json()
+    return this.deserialize(json as SearchResponse)
   }
 
   /**
@@ -47,16 +46,13 @@ export class SpotifyClient implements MusicApiClient {
    *
    * @param url URL of the resource to fetch.
    */
-  private fetch(url: string): Promise<Response> {
-    return (
-      SpotifyTokenManager.getInstance().getToken()
-        .then((token: string) => {
-          return fetch(url, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-        }))
+  private async fetch(url: string): Promise<Response> {
+    const token = await SpotifyTokenManager.getInstance().getToken()
+    return fetch(url, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
   }
 
   /**
@@ -108,13 +104,9 @@ class SpotifyTokenManager {
     return this.refreshToken()
   }
 
-  refreshToken(): Promise<string> {
-    return (
-      fetch("/spotify_auth_token")
-        .then((r: Response) => r.text())
-        .then((token: string) => {
-          this.token = token
-          return token
-        }))
+  async refreshToken(): Promise<string> {
+    const response = await fetch("/spotify_auth_token")
+    this.token = await response.text()
+    return this.token
   }
 }
