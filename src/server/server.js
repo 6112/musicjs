@@ -21,7 +21,7 @@ function init() {
   app.use(
     express.static(path.resolve(__dirname, "public")))
   app.use(
-    express.static(path.resolve(__dirname, "../../dist")))
+    express.static(path.resolve(__dirname, "../../dist/browser")))
 
   app.listen(PORT, () => {
     console.log(`Listening on localhost:${PORT}`)

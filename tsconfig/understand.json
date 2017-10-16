@@ -1,11 +1,11 @@
 {
   "include": [
-    "./src/client/",
+    "../src/client/",
   ],
   "compilerOptions": {
-    "outDir": "./dist/",
+    "outDir": "../dist/understand",
     "noImplicitAny": true,
-    "module": "amd",
+    "module": "es6",
     "target": "es2017",
     "allowJs": true
   }

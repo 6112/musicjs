@@ -1,3 +1,4 @@
+import { Fetcher } from "./fetch"
 import { Track } from "./track"
 import { MusicApiClient } from "./music-api-client"
 
@@ -11,17 +12,11 @@ const SEARCH_URL = "https://api.spotify.com/v1/search"
  * A client that can connect & do searches on a Spotify API backend. Singleton.
  */
 export class SpotifyClient implements MusicApiClient {
-  private static instance: SpotifyClient = undefined
-
-  private constructor() {}
-
   /**
-   * Return a singleton instance of this.
+   * Default constructor.
    */
-  static getInstance() {
-    if (!SpotifyClient.instance)
-      SpotifyClient.instance = new SpotifyClient()
-    return SpotifyClient.instance
+  constructor(private fetcher: Fetcher,
+              private tokenManager: SpotifyTokenManager) {
   }
 
   /**
@@ -33,26 +28,10 @@ export class SpotifyClient implements MusicApiClient {
   async search(query: string): Promise<Track[]> {
     const encodedQuery = encodeURIComponent(query)
     const url = `${SEARCH_URL}?q=${encodedQuery}&type=track`
-    const response = await this.fetch(url)
+    const authToken = await this.tokenManager.getToken()
+    const response = await this.fetcher.fetch(url, {}, authToken)
     const json = await response.json()
     return this.deserialize(json as SearchResponse)
-  }
-
-  /**
-   * Fetch a resource from the Spotify over HTTPS, giving an API token.
-   *
-   * See:
-   * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
-   *
-   * @param url URL of the resource to fetch.
-   */
-  private async fetch(url: string): Promise<Response> {
-    const token = await SpotifyTokenManager.getInstance().getToken()
-    return fetch(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
   }
 
   /**
@@ -84,18 +63,8 @@ interface RawTrack {
 /**
  * Manages an API token and automatically refreshes it when needed. Singleton.
  */
-class SpotifyTokenManager {
+export class SpotifyTokenManager {
   private token: string = undefined
-
-  private static instance: SpotifyTokenManager = undefined
-
-  private constructor() {}
-
-  static getInstance() {
-    if (!SpotifyTokenManager.instance)
-      SpotifyTokenManager.instance = new SpotifyTokenManager()
-    return SpotifyTokenManager.instance
-  }
 
   getToken(): Promise<string> {
     if (this.token)

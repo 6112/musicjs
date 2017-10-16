@@ -3,19 +3,19 @@ const ts = require("gulp-typescript")
 const typedoc = require("gulp-typedoc")
 const del = require("del")
 
-const tsProject = ts.createProject("tsconfig.json")
-const understandTsProject = ts.createProject("tsconfig.understand.json")
+const browserTsProject = ts.createProject("tsconfig/browser.json")
+const understandTsProject = ts.createProject("tsconfig/understand.json")
 
 gulp.task("default", () => {
-  return tsProject.src()
-    .pipe(tsProject())
-    .js.pipe(gulp.dest("dist"))
+  return browserTsProject.src()
+    .pipe(browserTsProject())
+    .js.pipe(gulp.dest("./dist/browser"))
 })
 
 gulp.task("understand", () => {
   return understandTsProject.src()
     .pipe(understandTsProject())
-    .js.pipe(gulp.dest("understand"))
+    .js.pipe(gulp.dest("./dist/understand"))
 })
 
 gulp.task("doc", () => {
@@ -25,14 +25,12 @@ gulp.task("doc", () => {
       target: "es2017",
       noImplicitAny: true,
       allowJs: true,
-      out: "./doc",
+      out: "./dist/doc",
     }))
 })
 
 gulp.task("clean", () => {
   return del([
     "./dist",
-    "./doc",
-    "./understand",
   ])
 })
