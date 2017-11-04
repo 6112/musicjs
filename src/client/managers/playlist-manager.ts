@@ -7,7 +7,7 @@ export class PlaylistManager {
     const found = this.findPlaylist(playlist, playlists);
     if (found) {
       found.tracks.push(track);
-      this.save(playlists);      
+      this.save(playlists);
     } else {
       this.notFound(playlist);
     }
@@ -46,8 +46,12 @@ export class PlaylistManager {
   public newPlaylist(name: string): Playlist {
     const playlists = this.load();
     const newPlaylist = new Playlist(name, []);
-    playlists.push(newPlaylist)
-    this.save(playlists);
+    if (this.findPlaylist(newPlaylist, playlists)) {
+      throw new Error('A playlist with name ' + newPlaylist.name + ' already exists.');
+    } else {
+      playlists.push(newPlaylist);
+      this.save(playlists);
+    }
     return newPlaylist;
   }
 
@@ -67,7 +71,9 @@ export class PlaylistManager {
   }
 
   private load(): Playlist[] {
-    return JSON.parse(localStorage.getItem('playlists') || '[]').map((playlist: string) => Playlist.deserialize(playlist));
+    return JSON.parse(localStorage.getItem('playlists') || '[]').map((playlist: string) => {
+      return Playlist.deserialize(playlist);
+    });
   }
 
   private save(playlists: Playlist[]): void {
