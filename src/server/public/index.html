@@ -6,10 +6,29 @@
 <link rel=stylesheet type=text/css href=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css>
 
 <main>
-  <div class=container>
-    <h1>music.js</h1>
+  <nav class="navbar navbar-dark bg-dark mb-3">
+    <div class=navbar-brand>
+      music.js
+    </div>
+    <div class="navbar-expand">
+      <ul class=navbar-nav>
+        <li class="nav-item">
+          <a class=nav-link href="#" data-target=search>
+            Recherche
+          </a>
+        </li>
+        <li class=nav-item>
+          <a class=nav-link href="#" data-target=playlist-list>
+            Playlists
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
-    <input type=text id=search-input class="form-control mb-3">
+  <div class=container hidden id=search>
+    <input type=text placeholder="Entrez un nom de chanson..."
+           id=search-input class="form-control mb-3">
 
     <div id=search-results>
       <ul class=list-group>
@@ -25,6 +44,27 @@
         </template>
       </ul>
     </div>
+  </div>
+
+  <div class=container hidden id=playlist-list>
+    <div class="form-group mb-3">
+      <input type=text placeholder="Nom de playlist" class=form-control
+             id=playlist-name-input>
+      <button type=button class=btn id=create-playlist-btn>Ajouter</button>
+    </div>
+
+    <ul class=list-group>
+      <template id=playlist-list-template>
+        {{#if noPlaylists}}
+        <h2>Pas de playlists ici!</h2>
+        {{/if}}
+        {{#each playlists}}
+          <li class=list-group-item>
+            {{name}} — {{tracks.length}} chansons
+          </li>
+        {{/each}}
+      </template>
+    </ul>
   </div>
 </main>
 
