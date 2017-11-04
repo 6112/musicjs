@@ -11,6 +11,5 @@ QUnit.test('Playlist should serialize and deserialize properly', (assert) => {
   const playlist = new Playlist(name, tracks);
   const serialized = playlist.serialize();
   const deserialized = Playlist.deserialize(serialized);
-  assert.deepEqual(deserialized.name, playlist.name);
-  assert.deepEqual(deserialized.tracks, playlist.tracks);
+  assert.deepEqual(deserialized, playlist);
 });

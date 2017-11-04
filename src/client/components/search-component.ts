@@ -37,7 +37,7 @@ export class SearchComponent extends BaseComponent {
 
   private renderTrackList(tracks: Track[]) {
     return SearchComponent.trackListTemplate({
-      tracks,
+      tracks
     });
   }
 

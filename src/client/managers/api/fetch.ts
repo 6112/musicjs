@@ -39,7 +39,7 @@ export class MockFetcher implements Fetcher {
     }
     return new Response('Error 500 - Internal server error', {
       status: 500,
-      statusText: 'Internal Server Error',
+      statusText: 'Internal Server Error'
     });
   }
 

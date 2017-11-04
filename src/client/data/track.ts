@@ -16,11 +16,11 @@ export class Track {
 
   public serialize(): string {
     return JSON.stringify({
-      title: this.title,
       artist: this.artist,
       length: this.length,
-      uri: this.uri,
       provider: this.provider,
+      title: this.title,
+      uri: this.uri
     });
   }
 }

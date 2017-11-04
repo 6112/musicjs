@@ -7,8 +7,8 @@ export class Playlist {
     return new Playlist(parsed.name, tracks);
   }
 
-  constructor(public name: string, 
-              public tracks: Array<Track>) {}
+  constructor(public name: string,
+              public tracks: Track[]) {}
 
   public serialize(): string {
     return JSON.stringify({

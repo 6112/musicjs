@@ -4,6 +4,7 @@
     "quotemark": [true, "single"],
     "interface-name": [true, "never-prefix"],
     "no-console": [false],
-    "max-classes-per-file": [false]
+    "max-classes-per-file": [false],
+    "trailing-comma": [true, { "multiline": "never", "singleline": "never" }]
   }
 }

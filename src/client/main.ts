@@ -1,4 +1,5 @@
 import { Router } from './components/router';
+
 import { PlaylistListComponent } from './components/playlist-list-component';
 import { SearchComponent } from './components/search-component';
 
@@ -32,7 +33,7 @@ function registerNavEvents() {
     // Update navbar state after a route change.
     router.addEventListener('route-change', (event: CustomEvent) => {
       const parent = item.parentElement;
-      if (event.detail == item.dataset.target) {
+      if (event.detail === item.dataset.target) {
         parent.classList.add('active');
       } else {
         parent.classList.remove('active');

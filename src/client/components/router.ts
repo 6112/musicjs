@@ -27,7 +27,7 @@ export class Router extends Emitter {
 
   private dispatchRouteEvent() {
     const event = new CustomEvent('route-change', {
-      detail: this.currentComponent.id,
+      detail: this.currentComponent.id
     });
     this.dispatchEvent(event);
   }
