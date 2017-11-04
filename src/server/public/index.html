@@ -16,7 +16,8 @@
         <template id=track-list-template>
           {{#each tracks}}
             <li class=list-group-item>
-              <a href="{{uri}}" target="_blank" rel="noopener noreferrer">
+              <img src="/img/{{provider}}.png" width=24 height=24 class="float-right ml-1">
+              <a href="{{uri}}" target=_blank rel="noopener noreferrer">
                 {{artist}} — {{title}}
               </a>
             </li>

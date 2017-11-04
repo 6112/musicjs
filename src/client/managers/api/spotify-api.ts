@@ -43,7 +43,8 @@ export class SpotifyApi implements MusicApi {
       return new Track(t.name,
                        t.artists[0].name,
                        Math.round(t.duration_ms / 1000),
-                       t.external_urls.spotify);
+                       t.external_urls.spotify,
+                       'spotify');
     });
   }
 }

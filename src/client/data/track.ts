@@ -9,7 +9,8 @@ export class Track {
   constructor(public title: string,
               public artist: string,
               public length: number, // seconds
-              public uri: string) { }
+              public uri: string,
+              public provider: 'deezer' | 'spotify' | 'soundcloud') { }
 
   public serialize(): string {
     throw new Error('Unimplemented');

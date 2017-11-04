@@ -4,7 +4,7 @@ import { Track } from './track';
 QUnit.test('Playlist should serialize and deserialize properly', (assert) => {
   const tracks = [
     new Track('Look what you made me do', 'Taylor Swift',
-              255, 'https://www.youtube.com/watch?v=3tmd-ClpJxA')
+              255, 'https://www.youtube.com/watch?v=3tmd-ClpJxA', 'spotify')
   ];
   const name = 'taytay';
   const playlist = new Playlist(name, tracks);
