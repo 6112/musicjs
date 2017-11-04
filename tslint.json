@@ -2,6 +2,8 @@
   "extends": "tslint:recommended",
   "rules": {
     "quotemark": [true, "single"],
-    "interface-name": [true, "never-prefix"]
+    "interface-name": [true, "never-prefix"],
+    "no-console": [false],
+    "max-classes-per-file": [false]
   }
 }

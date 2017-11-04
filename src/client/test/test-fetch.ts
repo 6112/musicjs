@@ -1,4 +1,4 @@
-import { MockFetcher } from '../fetch';
+import { MockFetcher } from '../managers/api/fetch';
 
 QUnit.module('MockFetcher');
 QUnit.test('basic example', async (t) => {
