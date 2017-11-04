@@ -23,6 +23,7 @@
     "gulp-typedoc": "^2.1.0",
     "gulp-typescript": "^3.2.2",
     "node-fetch": "^1.7.3",
+    "phantomjs": "^2.1.7",
     "typedoc": "^0.8.0",
     "typescript": "^2.5.3"
   },

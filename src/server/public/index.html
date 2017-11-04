@@ -31,8 +31,15 @@
            id=search-input class="form-control mb-3">
 
     <div id=search-results>
-      <ul class=list-group>
-        <template id=track-list-template>
+      <template id=track-list-template>
+        {{#if tracks.length}}
+        {{else}}
+          <div class="alert alert-light">
+            Utilisez le formulaire ci-dessus pour chercher une chanson.
+          </div>
+        {{/if}}
+
+        <ul class=list-group>
           {{#each tracks}}
             <li class=list-group-item>
               <img src="/img/{{provider}}.png" width=24 height=24 class="float-right ml-1">
@@ -40,31 +47,42 @@
                 {{artist}} — {{title}}
               </a>
             </li>
+
           {{/each}}
-        </template>
-      </ul>
+        </ul>
+      </template>
     </div>
   </div>
 
   <div class=container hidden id=playlist-list>
-    <div class="form-group mb-3">
-      <input type=text placeholder="Nom de playlist" class=form-control
-             id=playlist-name-input>
-      <button type=button class=btn id=create-playlist-btn>Ajouter</button>
+    <div class="input-group mb-3">
+      <input type=text placeholder="Entrez un nom de playlist..."
+             class=form-control id=playlist-name-input>
+      <span class=input-group-btn>
+        <button type=button class="btn btn-primary" id=create-playlist-btn>
+          Ajouter
+        </button>
+      </span>
     </div>
 
-    <ul class=list-group>
+    <div id=playlists-ul>
       <template id=playlist-list-template>
-        {{#if noPlaylists}}
-        <h2>Pas de playlists ici!</h2>
+        {{#if playlists.length}}
+        {{else}}
+          <div class="alert alert-light">
+            Il n'y a pas encore de playlists. Créez une playlist avec le
+            formulaire ci-dessus.
+          </div>
         {{/if}}
-        {{#each playlists}}
-          <li class=list-group-item>
-            {{name}} — {{tracks.length}} chansons
-          </li>
-        {{/each}}
+        <ul class=list-group>
+          {{#each playlists}}
+            <li class=list-group-item>
+              {{name}} — {{tracks.length}} chansons
+            </li>
+          {{/each}}
+        </ul>
       </template>
-    </ul>
+    </div>
   </div>
 </main>
 
