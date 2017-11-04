@@ -61,3 +61,11 @@ code, and open `localhost:3000/test.html` in a browser.
 ```
 npm run clean
 ```
+
+# Linting
+
+```
+npm run lint
+```
+
+Please fix lint errors before committing.

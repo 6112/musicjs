@@ -8,7 +8,7 @@ export interface Fetcher {
    * @param init Options object with custom settings.
    * @param authToken Authorization token if the endpoint requires one.
    */
-  fetch(url: string, init?: RequestInit, authToken?: string): Promise<Response>
+  fetch(url: string, init?: RequestInit, authToken?: string): Promise<Response>;
 }
 
 /**
@@ -18,12 +18,12 @@ export interface Fetcher {
  * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
  */
 export class FetchApiFetcher implements Fetcher {
-  fetch(url: string, init?: RequestInit, authToken?: string) {
-    const request = new Request(url, init)
+  public fetch(url: string, init?: RequestInit, authToken?: string) {
+    const request = new Request(url, init);
     if (authToken) {
-      request.headers.set("Authorization", `Bearer ${authToken}`)
+      request.headers.set("Authorization", `Bearer ${authToken}`);
     }
-    return fetch(request)
+    return fetch(request);
   }
 }
 
@@ -31,19 +31,19 @@ export class FetchApiFetcher implements Fetcher {
  * Stub of the `Fetcher` class for unit testing.
  */
 export class MockFetcher implements Fetcher {
-  private responses: Response[] = []
+  private responses: Response[] = [];
 
-  async fetch(url: string, init?: RequestInit, authToken?: string) {
+  public async fetch(url: string, init?: RequestInit, authToken?: string) {
     if (this.responses.length !== 0) {
-      return this.responses.shift()
+      return this.responses.shift();
     }
     return new Response("Error 500 - Internal server error", {
       status: 500,
       statusText: "Internal Server Error",
-    })
+    });
   }
 
-  pushResponse(response: Response) {
-    this.responses.push(response)
+  public pushResponse(response: Response) {
+    this.responses.push(response);
   }
 }

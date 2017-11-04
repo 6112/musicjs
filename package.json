@@ -9,7 +9,8 @@
     "doc": "gulp doc",
     "understand": "gulp understand",
     "build": "gulp",
-    "clean": "gulp clean"
+    "clean": "gulp clean",
+    "lint": "tslint --project tsconfig/browser.json"
   },
   "author": "ouellet",
   "license": "ISC",
@@ -24,5 +25,8 @@
     "node-fetch": "^1.7.3",
     "typedoc": "^0.8.0",
     "typescript": "^2.5.3"
+  },
+  "devDependencies": {
+    "tslint": "^5.8.0"
   }
 }

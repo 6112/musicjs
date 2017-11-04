@@ -1,1 +1,1 @@
-import "./test-fetch"
+import "./test-fetch";
