@@ -1,6 +1,6 @@
 {
   "include": [
-    "../src/client/",
+    "../src/client/"
   ],
   "compilerOptions": {
     "outDir": "../dist/understand",
