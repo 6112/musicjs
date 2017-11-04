@@ -53,6 +53,10 @@ And add the files from the `dist/understand` directory to the Understand project
 
 # Testing
 
+```
+npm run test
+```
+
 To run unit tests for client-side code, run the server, compile the client-side
 code, and open `localhost:3000/test.html` in a browser.
 

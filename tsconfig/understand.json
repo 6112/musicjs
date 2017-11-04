@@ -6,7 +6,7 @@
     "outDir": "../dist/understand",
     "noImplicitAny": true,
     "module": "es6",
-    "target": "es2017",
+    "target": "es2016",
     "allowJs": true
   }
 }
