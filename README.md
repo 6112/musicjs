@@ -17,7 +17,7 @@ npm install
 Just run this:
 
 ```
-./node_modules/.bin/gulp
+npm run build
 ```
 
 This will compile files from `src/client/` and put the .js files in
@@ -29,7 +29,7 @@ be used by the browser, but they're hard to analyze for Understand.
 To run the HTTP server, just run:
 
 ```
-node src/server/server.js
+npm start
 ```
 
 This will start a server listening on port 3000.
@@ -39,14 +39,14 @@ This will start a server listening on port 3000.
 To generate HTML documentation (output is placed in `dist/doc/index.html`):
 
 ```
-./node_modules/.bin/gulp doc
+npm run doc
 ```
 
 To generate JS files that are easy for Understand to analyze (but can't run in a
 browser):
 
 ```
-./node_modules/.bin/gulp understand
+npm run understand
 ```
 
 And add the files from the `dist/understand` directory to the Understand project.
@@ -59,5 +59,5 @@ code, and open `localhost:3000/test.html` in a browser.
 # Cleaning
 
 ```
-./node_modules/.bin/gulp clean
+npm run clean
 ```
