@@ -21,7 +21,7 @@ export class FetchApiFetcher implements Fetcher {
   public fetch(url: string, init?: RequestInit, authToken?: string) {
     const request = new Request(url, init);
     if (authToken) {
-      request.headers.set("Authorization", `Bearer ${authToken}`);
+      request.headers.set('Authorization', `Bearer ${authToken}`);
     }
     return fetch(request);
   }
@@ -37,9 +37,9 @@ export class MockFetcher implements Fetcher {
     if (this.responses.length !== 0) {
       return this.responses.shift();
     }
-    return new Response("Error 500 - Internal server error", {
+    return new Response('Error 500 - Internal server error', {
       status: 500,
-      statusText: "Internal Server Error",
+      statusText: 'Internal Server Error',
     });
   }
 

@@ -1,12 +1,12 @@
-import { Track } from "../../data/track";
-import { Fetcher } from "./fetch";
-import { MusicApi } from "./music-api";
+import { Track } from '../../data/track';
+import { Fetcher } from './fetch';
+import { MusicApi } from './music-api';
 
-const CLIENT_ID = "af1d0f4923bc4391a7bcd1f14f66a051";
-const CLIENT_SECRET = "e281a32169f54b0685179322910ceca2";
+const CLIENT_ID = 'af1d0f4923bc4391a7bcd1f14f66a051';
+const CLIENT_SECRET = 'e281a32169f54b0685179322910ceca2';
 
-const API_TOKEN_URL = "https://accounts.spotify.com/api/token";
-const SEARCH_URL = "https://api.spotify.com/v1/search";
+const API_TOKEN_URL = 'https://accounts.spotify.com/api/token';
+const SEARCH_URL = 'https://api.spotify.com/v1/search';
 
 /**
  * A client that can connect & do searches on a Spotify API backend. Singleton.
@@ -70,7 +70,7 @@ interface RawTrack {
   artists: Artist[];
   duration_ms: number;
   external_urls: ExternalUrl; // for opening in a new tab
-  uri: string;                 // for opening in the "native" spotify app
+  uri: string;                 // for opening in the 'native' spotify app
 }
 
 /**
@@ -105,7 +105,7 @@ export class SpotifyTokenManager {
   }
 
   public async refreshToken(): Promise<string> {
-    const response = await fetch("/spotify_auth_token");
+    const response = await fetch('/spotify_auth_token');
     this.token = await response.text();
     return this.token;
   }

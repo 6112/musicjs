@@ -1,4 +1,4 @@
-import { Track } from "../../data/track";
+import { Track } from '../../data/track';
 
 /**
  * A client that can connect & do searches on a music API backend.
