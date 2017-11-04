@@ -17,17 +17,8 @@ const fetcher = new FetchApiFetcher()
 const spotifyTokenManager = new SpotifyTokenManager()
 const spotify = new SpotifyApi(fetcher, spotifyTokenManager)
 
-const trackListTemplate = Handlebars.compile(`
-<ul>
-  {{#each tracks}}
-    <li>
-      <a href="{{uri}}" target="_blank" rel="noopener noreferrer">
-        {{artist}} — {{title}}
-      </a>
-    </li>
-  {{/each}}
-</ul>
-`)
+const trackListTemplate = Handlebars.compile(
+  document.getElementById("track-list-template").innerHTML)
 function renderTrackList(tracks: Track[]) {
   return trackListTemplate({
     tracks
