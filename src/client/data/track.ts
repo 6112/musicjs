@@ -3,7 +3,7 @@
  */
 export class Track {
   public static deserialize(json: string): Track {
-    throw new Error("Unimplemented");
+    throw new Error('Unimplemented');
   }
 
   constructor(public title: string,
@@ -12,6 +12,6 @@ export class Track {
               public uri: string) { }
 
   public serialize(): string {
-    throw new Error("Unimplemented");
+    throw new Error('Unimplemented');
   }
 }
