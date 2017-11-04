@@ -1,4 +1,4 @@
-import { SpotifyClient, SpotifyTokenManager } from "./spotify-client"
+import { SpotifyApi, SpotifyTokenManager } from "./spotify-api"
 import { FetchApiFetcher } from "./fetch"
 import { debounce } from "./debounce"
 
@@ -14,13 +14,14 @@ async function onSearchInput() {
 
 const fetcher = new FetchApiFetcher()
 const spotifyTokenManager = new SpotifyTokenManager()
-const spotify = new SpotifyClient(fetcher, spotifyTokenManager)
+const spotify = new SpotifyApi(fetcher, spotifyTokenManager)
 
 async function debouncedSpotifySearch() {
   const val = searchInput.value
   if (!val) {
   } else {
     const tracks = await spotify.search(val)
+    console.log(tracks)
     searchResults.innerHTML = ""
     for (const track of tracks) {
       searchResults.appendChild(track.render())

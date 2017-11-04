@@ -1,6 +1,6 @@
 import { Fetcher } from "./fetch"
 import { Track } from "./track"
-import { MusicApiClient } from "./music-api-client"
+import { MusicApi } from "./music-api"
 
 const CLIENT_ID = "af1d0f4923bc4391a7bcd1f14f66a051"
 const CLIENT_SECRET = "e281a32169f54b0685179322910ceca2"
@@ -11,7 +11,7 @@ const SEARCH_URL = "https://api.spotify.com/v1/search"
 /**
  * A client that can connect & do searches on a Spotify API backend. Singleton.
  */
-export class SpotifyClient implements MusicApiClient {
+export class SpotifyApi implements MusicApi {
   /**
    * Default constructor.
    */
@@ -31,6 +31,7 @@ export class SpotifyClient implements MusicApiClient {
     const authToken = await this.tokenManager.getToken()
     const response = await this.fetcher.fetch(url, {}, authToken)
     const json = await response.json()
+    console.log(json)
     return this.deserialize(json as SearchResponse)
   }
 
@@ -38,12 +39,19 @@ export class SpotifyClient implements MusicApiClient {
    * Deserialize a SearchResponse object.
    */
   private deserialize(json: SearchResponse): Track[] {
-    return json.tracks.items.map(t => new Track(t.name))
+    return json.tracks.items.map(t => {
+      return new Track(t.name,
+                       t.artists[0].name,
+                       Math.round(t.duration_ms / 1000),
+                       t.external_urls.spotify)
+    })
   }
 }
 
 /**
  * Response sent by the Spotify API for a search request.
+ *
+ * https://developer.spotify.com/web-api/search-item/
  */
 interface SearchResponse {
   tracks: TrackList
@@ -57,7 +65,29 @@ interface TrackList {
  * Raw Track object returned by the Spotify API.
  */
 interface RawTrack {
-  name: string
+  id: string,
+  name: string,
+  artists: Artist[],
+  duration_ms: number,
+  external_urls: ExternalUrl, // for opening in a new tab
+  uri: string                 // for opening in the "native" spotify app
+}
+
+/**
+ * List of external URLs to refer to a resource (artist, track, album...) in the
+ * Spotify API.
+ */
+interface ExternalUrl {
+  spotify: string               // link to the resource on spotify.com
+}
+
+/**
+ * Raw (simplified) Artist object returned by the Spotify API.
+ */
+interface Artist {
+  id: string,
+  name: string,
+  external_urls: ExternalUrl
 }
 
 /**

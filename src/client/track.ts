@@ -2,10 +2,10 @@
  * Object representing a Track from any source.
  */
 export class Track {
-  public title: string
-
-  constructor(title: string) {
-    this.title = title
+  constructor(public title: string,
+              public artist: string,
+              public length: number, // seconds
+              public uri: string) {
   }
 
   render() {

@@ -3,7 +3,7 @@ import { Track } from "./track"
 /**
  * A client that can connect & do searches on a music API backend.
  */
-export interface MusicApiClient {
+export interface MusicApi {
   /**
    * Search for tracks on the music API backend.
    *
