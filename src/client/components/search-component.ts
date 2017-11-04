@@ -31,6 +31,8 @@ export class SearchComponent extends BaseComponent {
     const fetcher = new FetchApiFetcher();
     const spotifyTokenManager = new SpotifyTokenManager();
     this.spotify = new SpotifyApi(fetcher, spotifyTokenManager);
+
+    this.searchResults.innerHTML = this.renderTrackList([]);
   }
 
   private renderTrackList(tracks: Track[]) {
