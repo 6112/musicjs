@@ -1,6 +1,7 @@
 import { Playlist } from './playlist';
 import { Track } from './track';
 
+QUnit.module('Playlist');
 QUnit.test('Playlist should serialize and deserialize properly', (assert) => {
   const tracks = [
     new Track('Look what you made me do', 'Taylor Swift',
@@ -10,6 +11,6 @@ QUnit.test('Playlist should serialize and deserialize properly', (assert) => {
   const playlist = new Playlist(name, tracks);
   const serialized = playlist.serialize();
   const deserialized = Playlist.deserialize(serialized);
-  assert.equal(playlist.name, deserialized.name);
-  assert.equal(playlist.tracks, deserialized.tracks);
+  assert.deepEqual(deserialized.name, playlist.name);
+  assert.deepEqual(deserialized.tracks, playlist.tracks);
 });
