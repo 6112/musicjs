@@ -5,23 +5,23 @@ main {
     padding: 0 16px;
 }
 
-#search-results {
+#search-results ul {
     list-style: none;
     padding: 0;
     max-width: 400px;
 }
 
-#search-results > li:first-child {
+#search-results li:first-child {
     border-radius: 4px 4px 0 0;
 }
 
-#search-results > li {
+#search-results li {
     border: 1px solid #ccc;
     border-bottom-width: 0;
     padding: 2px 8px;
 }
 
-#search-results > li:last-child {
+#search-results li:last-child {
     border-bottom-width: 1px;
     border-radius: 0 0 4px 4px;
 }

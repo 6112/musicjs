@@ -8,15 +8,6 @@ export class Track {
               public uri: string) {
   }
 
-  render() {
-    const li = document.createElement("li")
-    const a = document.createElement("a")
-    a.setAttribute("href", "")
-    a.innerText = this.title
-    li.appendChild(a)
-    return li
-  }
-
   serialize(): string {
     throw new Error("Unimplemented")
   }
