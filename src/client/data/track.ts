@@ -3,7 +3,8 @@
  */
 export class Track {
   public static deserialize(json: string): Track {
-    throw new Error('Unimplemented');
+    const parsed = JSON.parse(json);
+    return new Track(parsed.title, parsed.artist, parsed.length, parsed.uri);
   }
 
   constructor(public title: string,
@@ -12,6 +13,11 @@ export class Track {
               public uri: string) { }
 
   public serialize(): string {
-    throw new Error('Unimplemented');
+    return JSON.stringify({
+      title: this.title,
+      artist: this.artist,
+      length: this.length,
+      uri: this.uri
+    });
   }
 }
