@@ -1,12 +1,13 @@
 import { Track } from '../data/track';
 import { FetchApiFetcher } from '../managers/api/fetch';
 import { SpotifyApi, SpotifyTokenManager } from '../managers/api/spotify-api';
+import { BaseComponent } from './component';
 import { Debouncer } from './debouncer';
 
 /**
  * UI Component for searching tracks and displaying the list of results.
  */
-export class SearchComponent {
+export class SearchComponent extends BaseComponent {
   private static trackListTemplate = Handlebars.compile(
     document.getElementById('track-list-template').innerHTML);
 
@@ -19,6 +20,7 @@ export class SearchComponent {
   private spotify: SpotifyApi;
 
   constructor() {
+    super('search', 'Recherche');
     this.searchInput =
       document.getElementById('search-input') as HTMLInputElement;
     this.searchInput.value = '';
