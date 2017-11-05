@@ -2,16 +2,45 @@ import { Playlist } from '../data/playlist';
 import { BaseComponent } from './component';
 import { PlaylistManager } from '../managers/playlist-manager';
 
+/**
+ * Manages the UI of the list of playlists.
+ */
 export class PlaylistListComponent extends BaseComponent {
+  /**
+   * Template for the list of playlists.
+   */
   private static playlistListTemplate = Handlebars.compile(
     document.getElementById('playlist-list-template').innerHTML);
 
+  /**
+   * UI for the list of playlists.
+   */
   private playlistsUl: HTMLElement;
+
+  /**
+   * UI for the button that adds a playlist.
+   */
   private addButton: HTMLElement;
+
+  /**
+   * UI for the input for the name of the playlist.
+   */
   private nameInput: HTMLInputElement;
+
+  /**
+   * UI for the input group containing the button and the input for the creation of a new playlist.
+   */
   private inputGroup: HTMLElement;
-  private playlists: Playlist[];
+
+  /**
+   * UI for the error message.
+   */
   private errorMessage: HTMLElement;
+
+  /**
+   * List of playlists.
+   */
+  private playlists: Playlist[];
 
   public constructor() {
     super('playlist-list', 'Playlists');
@@ -22,19 +51,29 @@ export class PlaylistListComponent extends BaseComponent {
     this.inputGroup = document.getElementById('name-input-group');
     this.errorMessage = document.getElementById('add-playlist-error');
     this.renderPlaylistList();
-    this.addButton.addEventListener('click', this.onAdd.bind(this));
+    this.addButton.addEventListener('click', () => {
+      this.addPlaylist();
+    });
   }
 
+  /**
+   * Render the list of playlists.
+   */
   private renderPlaylistList(): void {
     this.playlistsUl.innerHTML = PlaylistListComponent.playlistListTemplate({ playlists: this.playlists });
     const listItems = document.getElementsByClassName('list-group-item');
     for (let i = 0; i < listItems.length; ++i) {
       const item = listItems.item(i) as HTMLElement;
-      item.addEventListener('click', this.onPlaylistClick.bind(this, this.playlists[+item.dataset.index]));
+      item.addEventListener('click', () => {
+        this.openPlaylist(this.playlists[+item.dataset.index]);
+      });
     }
   }
 
-  private onAdd(): void {
+  /**
+   * Called when the user wants to add a new playlist.
+   */
+  private addPlaylist(): void {
     try {
       this.nameInput.classList.remove('is-invalid');
       this.inputGroup.classList.remove('is-invalid');
@@ -49,8 +88,12 @@ export class PlaylistListComponent extends BaseComponent {
     }
   }
 
-  private onPlaylistClick(playlist: Playlist): void {
-    // todo : use router ? to open the playlistComponent
+  /**
+   * Called when the user wants to open a playlist.
+   * @param playlist Playlist to open.
+   */
+  private openPlaylist(playlist: Playlist): void {
+    // TODO : use router ? to open the playlistComponent
     console.log(playlist.name);
   }
 }
