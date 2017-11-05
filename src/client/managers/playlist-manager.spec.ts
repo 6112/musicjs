@@ -1,16 +1,16 @@
 import { Playlist } from '../data/playlist';
-import { PlaylistManager } from './playlist-manager';
 import { Track } from '../data/track';
+import { PlaylistManager } from './playlist-manager';
 
 QUnit.module('PlaylistManager', {
-  beforeEach: (): void => {
-    this.playlistManager = new PlaylistManager();
-  },
   afterEach: (): void => {
     const playlists = this.playlistManager.loadPlaylists();
     playlists.forEach((playlist: Playlist) => {
       this.playlistManager.deletePlaylist(playlist);
     });
+  },
+  beforeEach: (): void => {
+    this.playlistManager = new PlaylistManager();
   }
 });
 
@@ -41,7 +41,6 @@ QUnit.test('should delete playlists correctly', (assert) => {
   this.playlistManager.deletePlaylist(taytay);
   assert.deepEqual(this.playlistManager.loadPlaylists(), [beibs]);
 });
-
 
 QUnit.test('should add tracks to playlists correctly', (assert) => {
   const newTrack = new Track('Look what you made me do', 'Taylor Swift', 255,
