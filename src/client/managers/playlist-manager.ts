@@ -35,6 +35,7 @@ export class PlaylistManager {
       if (oldPos >= 0 && oldPos < found.tracks.length) {
         const track = found.tracks.splice(oldPos, 1)[0];
         found.tracks.splice(newPos, 0, track);
+        this.save(playlists);
       } else {
         this.outOfBounds(oldPos, found);
       }
