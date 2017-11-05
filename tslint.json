@@ -1,10 +1,20 @@
 {
-  "extends": "tslint:recommended",
+  "extends": "tslint:all",
   "rules": {
     "quotemark": [true, "single"],
     "interface-name": [true, "never-prefix"],
-    "no-console": [false],
     "max-classes-per-file": [false],
-    "trailing-comma": [true, { "multiline": "never", "singleline": "never" }]
+    "no-parameter-properties": [false],
+    "trailing-comma": [true, { "multiline": "never", "singleline": "never" }],
+    "ordered-imports": [true, { "import-sources-order": "any", "named-imports-order": "case-insensitive" }],
+    "object-literal-sort-keys": [false],
+    "member-ordering": [true, { "order": ["static-field", "static-method",  "instance-field", "constructor", "instance-method"] , "alphabetize": false }],
+    "no-null-keyword": [false],
+    "strict-type-predicates": [false],
+    "strict-boolean-expressions": [false],
+    "typedef": [false],
+    "prefer-template": [true, "allow-single-concat"],
+    "newline-before-return": [false],
+    "no-unnecessary-class": ["allow-static-only"]
   }
 }

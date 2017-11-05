@@ -7,13 +7,13 @@ export class PlaylistListComponent extends BaseComponent {
 
   private playlistsUl: HTMLElement;
 
-  constructor() {
+  public constructor() {
     super('playlist-list', 'Playlists');
     this.playlistsUl = document.getElementById('playlists-ul');
     this.playlistsUl.innerHTML = this.renderPlaylistList([]);
   }
 
-  private renderPlaylistList(playlists: Playlist[]) {
+  private renderPlaylistList(playlists: Playlist[]): string {
     return PlaylistListComponent.playlistListTemplate({
       playlists
     });

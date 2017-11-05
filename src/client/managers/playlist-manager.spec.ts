@@ -1,115 +1,120 @@
 import { Playlist } from '../data/playlist';
 import { Track } from '../data/track';
+import { Provider } from '../data/provider';
 import { PlaylistManager } from './playlist-manager';
+
+const trackLength1 = 255;
+const trackLength2 = 272;
 
 QUnit.module('PlaylistManager', {
   afterEach: (): void => {
-    const playlists = this.playlistManager.loadPlaylists();
+    const playlists = PlaylistManager.loadPlaylists();
     playlists.forEach((playlist: Playlist) => {
-      this.playlistManager.deletePlaylist(playlist);
+      PlaylistManager.deletePlaylist(playlist);
     });
-  },
-  beforeEach: (): void => {
-    this.playlistManager = new PlaylistManager();
   }
 });
 
 QUnit.test('should create playlists correctly', (assert) => {
   const playlists = [new Playlist('taytay', [])];
-  this.playlistManager.newPlaylist('taytay');
-  assert.deepEqual(this.playlistManager.loadPlaylists(), playlists);
+  PlaylistManager.newPlaylist('taytay');
+  assert.deepEqual(PlaylistManager.loadPlaylists(), playlists);
   playlists.push(new Playlist('kanye', []));
-  this.playlistManager.newPlaylist('kanye');
-  assert.deepEqual(this.playlistManager.loadPlaylists(), playlists);
+  PlaylistManager.newPlaylist('kanye');
+  assert.deepEqual(PlaylistManager.loadPlaylists(), playlists);
   assert.throws(() => {
-    this.playlistManager.newPlaylist('taytay');
+    PlaylistManager.newPlaylist('taytay');
   });
-  assert.deepEqual(this.playlistManager.loadPlaylists(), playlists);
+  assert.deepEqual(PlaylistManager.loadPlaylists(), playlists);
 });
 
 QUnit.test('should delete playlists correctly', (assert) => {
-  const taytay = this.playlistManager.newPlaylist('taytay');
-  const kanye = this.playlistManager.newPlaylist('kanye');
-  const beibs = this.playlistManager.newPlaylist('beibs');
-  assert.deepEqual(this.playlistManager.loadPlaylists(), [taytay, kanye, beibs]);
-  this.playlistManager.deletePlaylist(kanye);
-  assert.deepEqual(this.playlistManager.loadPlaylists(), [taytay, beibs]);
+  const taytay = PlaylistManager.newPlaylist('taytay');
+  const kanye = PlaylistManager.newPlaylist('kanye');
+  const beibs = PlaylistManager.newPlaylist('beibs');
+  assert.deepEqual(PlaylistManager.loadPlaylists(), [taytay, kanye, beibs]);
+  PlaylistManager.deletePlaylist(kanye);
+  assert.deepEqual(PlaylistManager.loadPlaylists(), [taytay, beibs]);
   assert.throws(() => {
-    this.playlistManager.deletePlaylist(kanye);
+    PlaylistManager.deletePlaylist(kanye);
   });
-  assert.deepEqual(this.playlistManager.loadPlaylists(), [taytay, beibs]);
-  this.playlistManager.deletePlaylist(taytay);
-  assert.deepEqual(this.playlistManager.loadPlaylists(), [beibs]);
+  assert.deepEqual(PlaylistManager.loadPlaylists(), [taytay, beibs]);
+  PlaylistManager.deletePlaylist(taytay);
+  assert.deepEqual(PlaylistManager.loadPlaylists(), [beibs]);
 });
 
 QUnit.test('should add tracks to playlists correctly', (assert) => {
-  const newTrack = new Track('Look what you made me do', 'Taylor Swift', 255,
-                             'https://www.youtube.com/watch?v=3tmd-ClpJxA', 'spotify');
-  const taytay = this.playlistManager.newPlaylist('taytay');
+  const newTrack = new Track('Look what you made me do', 'Taylor Swift', trackLength1,
+                             'https://www.youtube.com/watch?v=3tmd-ClpJxA', Provider.SPOTIFY);
+  const taytay = PlaylistManager.newPlaylist('taytay');
   const playlist = new Playlist('taytay', []);
   playlist.tracks.push(newTrack);
-  this.playlistManager.addToPlaylist(newTrack, taytay);
-  assert.deepEqual(this.playlistManager.loadPlaylists(), [playlist]);
+  PlaylistManager.addToPlaylist(newTrack, taytay);
+  assert.deepEqual(PlaylistManager.loadPlaylists(), [playlist]);
   playlist.tracks.push(newTrack);
-  this.playlistManager.addToPlaylist(newTrack, taytay);
-  assert.deepEqual(this.playlistManager.loadPlaylists(), [playlist]);
-  this.playlistManager.deletePlaylist(taytay);
+  PlaylistManager.addToPlaylist(newTrack, taytay);
+  assert.deepEqual(PlaylistManager.loadPlaylists(), [playlist]);
+  PlaylistManager.deletePlaylist(taytay);
   assert.throws(() => {
-    this.playlistManager.addToPlaylist(newTrack, taytay);
+    PlaylistManager.addToPlaylist(newTrack, taytay);
   });
 });
 
 QUnit.test('should remove tracks from playlists correctly', (assert) => {
-  const newTrack1 = new Track('Look what you made me do', 'Taylor Swift', 255,
-                              'https://www.youtube.com/watch?v=3tmd-ClpJxA', 'spotify');
-  const newTrack2 = new Track('Blank space', 'Taylor Swift', 272,
-                              'https://www.youtube.com/watch?v=e-ORhEE9VVg', 'spotify');
-  const taytay = this.playlistManager.newPlaylist('taytay');
-  this.playlistManager.addToPlaylist(newTrack1, taytay);
-  this.playlistManager.addToPlaylist(newTrack2, taytay);
-  this.playlistManager.addToPlaylist(newTrack1, taytay);
+  const newTrack1 = new Track('Look what you made me do', 'Taylor Swift', trackLength1,
+                              'https://www.youtube.com/watch?v=3tmd-ClpJxA', Provider.SPOTIFY);
+  const newTrack2 = new Track('Blank space', 'Taylor Swift', trackLength2,
+                              'https://www.youtube.com/watch?v=e-ORhEE9VVg', Provider.SPOTIFY);
+  const taytay = PlaylistManager.newPlaylist('taytay');
+  PlaylistManager.addToPlaylist(newTrack1, taytay);
+  PlaylistManager.addToPlaylist(newTrack2, taytay);
+  PlaylistManager.addToPlaylist(newTrack1, taytay);
   const playlist = new Playlist('taytay', [newTrack1, newTrack2, newTrack1]);
-  assert.deepEqual(this.playlistManager.loadPlaylists(), [playlist]);
+  assert.deepEqual(PlaylistManager.loadPlaylists(), [playlist]);
   playlist.tracks.splice(1, 1);
-  this.playlistManager.removeTrack(taytay, 1);
-  assert.deepEqual(this.playlistManager.loadPlaylists(), [playlist]);
+  PlaylistManager.removeTrack(taytay, 1);
+  assert.deepEqual(PlaylistManager.loadPlaylists(), [playlist]);
   playlist.tracks.splice(1, 1);
-  this.playlistManager.removeTrack(taytay, 1);
-  assert.deepEqual(this.playlistManager.loadPlaylists(), [playlist]);
+  PlaylistManager.removeTrack(taytay, 1);
+  assert.deepEqual(PlaylistManager.loadPlaylists(), [playlist]);
   assert.throws(() => {
-    this.playlistManager.removeTrack(taytay, 1);
+    PlaylistManager.removeTrack(taytay, 1);
   });
-  assert.deepEqual(this.playlistManager.loadPlaylists(), [playlist]);
-  this.playlistManager.deletePlaylist(taytay);
+  assert.deepEqual(PlaylistManager.loadPlaylists(), [playlist]);
+  PlaylistManager.deletePlaylist(taytay);
   assert.throws(() => {
-    this.playlistManager.removeTrack(taytay, 0);
+    PlaylistManager.removeTrack(taytay, 0);
   });
 });
 
 QUnit.test('should move tracks in playlists correctly', (assert) => {
-  const newTrack1 = new Track('Look what you made me do', 'Taylor Swift', 255,
-                              'https://www.youtube.com/watch?v=3tmd-ClpJxA', 'spotify');
-  const newTrack2 = new Track('Blank space', 'Taylor Swift', 272,
-                              'https://www.youtube.com/watch?v=e-ORhEE9VVg', 'spotify');
-  const taytay = this.playlistManager.newPlaylist('taytay');
-  this.playlistManager.addToPlaylist(newTrack1, taytay);
-  this.playlistManager.addToPlaylist(newTrack2, taytay);
-  this.playlistManager.addToPlaylist(newTrack1, taytay);
+  const first = 0;
+  const second = 1;
+  const third = 2;
+  const fourth = 3;
+  const newTrack1 = new Track('Look what you made me do', 'Taylor Swift', trackLength1,
+                              'https://www.youtube.com/watch?v=3tmd-ClpJxA', Provider.SPOTIFY);
+  const newTrack2 = new Track('Blank space', 'Taylor Swift', trackLength2,
+                              'https://www.youtube.com/watch?v=e-ORhEE9VVg', Provider.SPOTIFY);
+  const taytay = PlaylistManager.newPlaylist('taytay');
+  PlaylistManager.addToPlaylist(newTrack1, taytay);
+  PlaylistManager.addToPlaylist(newTrack2, taytay);
+  PlaylistManager.addToPlaylist(newTrack1, taytay);
   const playlist = new Playlist('taytay', [newTrack1, newTrack2, newTrack1]);
-  assert.deepEqual(this.playlistManager.loadPlaylists(), [playlist]);
+  assert.deepEqual(PlaylistManager.loadPlaylists(), [playlist]);
   playlist.tracks = [newTrack1, newTrack1, newTrack2];
-  this.playlistManager.moveTrack(taytay, 1, 2);
-  assert.deepEqual(this.playlistManager.loadPlaylists(), [playlist]);
+  PlaylistManager.moveTrack(taytay, second, third);
+  assert.deepEqual(PlaylistManager.loadPlaylists(), [playlist]);
   playlist.tracks = [newTrack2, newTrack1, newTrack1];
-  this.playlistManager.moveTrack(taytay, 2, 0);
-  assert.deepEqual(this.playlistManager.loadPlaylists(), [playlist]);
+  PlaylistManager.moveTrack(taytay, third, first);
+  assert.deepEqual(PlaylistManager.loadPlaylists(), [playlist]);
   assert.throws(() => {
-    this.playlistManager.moveTrack(taytay, 3, 0);
+    PlaylistManager.moveTrack(taytay, fourth, first);
   });
-  assert.deepEqual(this.playlistManager.loadPlaylists(), [playlist]);
-  this.playlistManager.deletePlaylist(taytay);
+  assert.deepEqual(PlaylistManager.loadPlaylists(), [playlist]);
+  PlaylistManager.deletePlaylist(taytay);
   assert.throws(() => {
-    this.playlistManager.moveTrack(taytay, 0, 2);
+    PlaylistManager.moveTrack(taytay, first, third);
   });
-  assert.deepEqual(this.playlistManager.loadPlaylists(), []);
+  assert.deepEqual(PlaylistManager.loadPlaylists(), []);
 });

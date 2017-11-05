@@ -19,7 +19,7 @@ export class SearchComponent extends BaseComponent {
   // TODO: use SearchManager once it's implemented, instead of SpotifyApi
   private spotify: SpotifyApi;
 
-  constructor() {
+  public constructor() {
     super('search', 'Recherche');
     this.searchInput =
       document.getElementById('search-input') as HTMLInputElement;

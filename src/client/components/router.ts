@@ -5,7 +5,7 @@ export class Router extends Emitter {
   private components = new Map<string, Component>();
   private currentComponent: Component;
 
-  constructor(private defaultComponent: Component) {
+  public constructor(private defaultComponent: Component) {
     super();
   }
 

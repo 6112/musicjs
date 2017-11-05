@@ -9,9 +9,9 @@ type Callback = () => void;
 export class Debouncer {
   private timer: TimerId = null;
 
-  constructor(private delay: number) {}
+  public constructor(private delay: number) {}
 
-  public debounce(callback: Callback) {
+  public debounce(callback: Callback): void {
     if (this.timer) {
       window.clearTimeout(this.timer);
     }

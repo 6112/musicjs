@@ -2,13 +2,12 @@ import { Track } from './track';
 
 export class Playlist {
   public static deserialize(json: string): Playlist {
-    const parsed = JSON.parse(json);
-    const tracks = parsed.tracks.map((track: any) => Track.deserialize(track));
+    const parsed = JSON.parse(json) as { name: string; tracks: string[] };
+    const tracks = parsed.tracks.map((track) => Track.deserialize(track));
     return new Playlist(parsed.name, tracks);
   }
 
-  constructor(public name: string,
-              public tracks: Track[]) {}
+  public constructor(public name: string, public tracks: Track[]) {}
 
   public serialize(): string {
     return JSON.stringify({

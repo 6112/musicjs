@@ -1,4 +1,5 @@
 import { Track } from '../../data/track';
+import { Provider } from '../../data/provider';
 import { Fetcher } from './fetch';
 import { MusicApi } from './music-api';
 
@@ -44,7 +45,7 @@ export class SpotifyApi implements MusicApi {
                        t.artists[0].name,
                        Math.round(t.duration_ms / 1000),
                        t.external_urls.spotify,
-                       'spotify');
+                       Provider.SPOTIFY);
     });
   }
 }

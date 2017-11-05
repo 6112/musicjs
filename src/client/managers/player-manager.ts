@@ -1,3 +1,3 @@
-export class PlaylistManager {
+export class PlayerManager {
 
 }

@@ -2,18 +2,18 @@ export interface Component {
   id: string;
   title: string;
 
-  show(): void;
   hide(): void;
+  show(): void;
 }
 
 export class BaseComponent {
-  constructor(public id: string, public title: string) { }
+  public constructor(public id: string, public title: string) { }
 
-  public show() {
+  public show(): void {
     document.getElementById(this.id).removeAttribute('hidden');
   }
 
-  public hide() {
+  public hide(): void {
     document.getElementById(this.id).setAttribute('hidden', '');
   }
 }
