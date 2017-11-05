@@ -31,6 +31,6 @@ gulp.task('doc', () => {
 
 gulp.task('clean', () => {
   return del([
-    './dist', './coverage'
+    './dist'
   ]);
 });

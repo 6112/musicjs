@@ -13,6 +13,18 @@ module.exports = function(config) {
     },
     reporters: ['progress', 'coverage'],
     browsers: ['Chrome'],
-    singleRun: true
+    singleRun: true,
+    coverageReporter: {
+      dir: 'dist/coverage',
+      includeAllSources: true,
+      check: {
+        global: {
+          statements: 50,
+          branches: 50,
+          functions: 50,
+          lines: 50
+        }
+      }
+    }
   });
 };
