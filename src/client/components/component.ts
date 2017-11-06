@@ -1,15 +1,32 @@
+/**
+ * Interface for a UI component.
+ */
 export interface Component {
+  /**
+   * ID of the component.
+   */
   id: string;
+
+  /**
+   * Title of the component.
+   */
   title: string;
 
+  /**
+   * Hides the component.
+   */
   hide(): void;
+
+  /**
+   * Displays the component.
+   */
   show(): void;
 }
 
 /**
  * Base of the UI component.
  */
-export class BaseComponent {
+export class BaseComponent implements Component {
   /**
    * Constructor.
    * @param id ID of the component. Must be unique.
