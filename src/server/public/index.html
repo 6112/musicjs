@@ -66,11 +66,18 @@
       </div>
 
       <div class="container" id="playlist" hidden>
+        <div id="playlist-info">
+            <template id="playlist-info-template">
+              <h1>{{playlist.name}}</h1>
+              <p>{{playlist.tracks.length}} chansons</p>
+              <button type="button" class="btn" id="delete-playlist">Supprimer la liste de reproduction</button>    
+            </template>
+        </div>
         <div id="tracks-ul">
           <template id="playlist-tracks-list-template">
-            {{#if tracks.length}}
+            {{#if playlist.tracks.length}}
               <ul class="list-group">
-                {{#each tracks}}
+                {{#each playlist.tracks}}
                   <li class="list-group-item" data-index="{{@index}}">{{title}} — {{artist}}</li>
                 {{/each}}
               </ul>

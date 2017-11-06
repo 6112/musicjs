@@ -44,16 +44,24 @@ export class PlaylistListComponent extends BaseComponent {
 
   public constructor() {
     super('playlist-list', 'Listes de reproduction');
-    this.playlists = PlaylistManager.loadPlaylists();
     this.playlistsUl = document.getElementById('playlists-ul');
     this.nameInput = document.getElementById('playlist-name-input') as HTMLInputElement;
     this.addButton = document.getElementById('create-playlist-btn');
     this.inputGroup = document.getElementById('name-input-group');
     this.errorMessage = document.getElementById('add-playlist-error');
-    this.renderPlaylistList();
     this.addButton.addEventListener('click', () => {
       this.addPlaylist();
     });
+  }
+
+  /**
+   * Show the component.
+   * @param _ unused.
+   */
+  public show(_: {}): void {
+    super.show(_);
+    this.playlists = PlaylistManager.loadPlaylists();
+    this.renderPlaylistList();
   }
 
   /**

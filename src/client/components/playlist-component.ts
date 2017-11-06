@@ -12,11 +12,31 @@ export class PlaylistComponent extends BaseComponent {
   private static trackListTemplate = Handlebars.compile(
     document.getElementById('playlist-tracks-list-template').innerHTML);
 
+  /**
+   * Template for the playlist's info.
+   */
+  private static playlistInfoTemplate = Handlebars.compile(
+    document.getElementById('playlist-info-template').innerHTML);
+
+  /**
+   * UI for the list of tracks.
+   */
+  private tracks: HTMLElement;
 
   /**
    * Playlist which details are shown.
    */
   private playlist: Playlist;
+
+  /**
+   * UI for the delete button.
+   */
+  private deleteButton: HTMLElement;
+
+  /**
+   * UI for the playlist's info.
+   */
+  private playlistInfo: HTMLElement;
 
   public constructor() {
     super('playlist', 'Liste de reproduction');
@@ -29,6 +49,17 @@ export class PlaylistComponent extends BaseComponent {
   public show(payload: Playlist) {
     super.show(payload);
     this.playlist = payload;
+
+    this.playlistInfo = document.getElementById('playlist-info');
+    this.playlistInfo.innerHTML = this.renderPlaylistInfo();
+
+    this.tracks = document.getElementById('tracks-ul');
+    this.tracks.innerHTML = this.renderTracks();
+
+    this.deleteButton = document.getElementById('delete-playlist');
+    this.deleteButton.addEventListener('click', () => {
+      this.deletePlaylist();
+    });
   }
 
   /**
@@ -75,5 +106,21 @@ export class PlaylistComponent extends BaseComponent {
    */
   public openTrack(pos: number): void {
     // TODO : navigate to the track component
+  }
+
+  /**
+   * Render the list of tracks.
+   * @return UI for the list of tracks.
+   */
+  private renderTracks(): string {
+    return PlaylistComponent.trackListTemplate({ playlist: this.playlist });
+  }
+
+  /**
+   * Render the playlist's info.
+   * @return UI for the playlist's info.
+   */
+  private renderPlaylistInfo(): string {
+    return PlaylistComponent.playlistInfoTemplate({ playlist: this.playlist });
   }
 }
