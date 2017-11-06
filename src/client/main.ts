@@ -1,44 +1,39 @@
 import { Router } from './components/router';
-
 import { PlaylistListComponent } from './components/playlist-list-component';
 import { SearchComponent } from './components/search-component';
+import { PlaylistComponent } from './components/playlist-component';
+import { TrackComponent } from './components/track-component';
 
+// Create router and register components.
 const search = new SearchComponent();
 const playlistList = new PlaylistListComponent();
+const playlist = new PlaylistComponent();
+const track = new TrackComponent();
 
 const DEFAULT_COMPONENT = search;
 
 const router = new Router(DEFAULT_COMPONENT);
-router.register(search, playlistList);
+router.register(playlistList, playlist, track);
 
-registerNavEvents();
-navigateToCurrentUrl();
+// Register nav events.
+const navItems = document.querySelectorAll('.nav-item > a');
 
-function navigateToCurrentUrl() {
-  const slug = window.location.pathname.substr(1);
-  router.navigateTo(slug);
+for (const item of navItems) {
+  item.addEventListener('click', (event: MouseEvent) => {
+    router.navigateTo((item as HTMLElement).dataset.target);
+    event.preventDefault();
+  });
+
+  // Update navbar state after a route change.
+  router.addEventListener('route-change', (event: CustomEvent) => {
+    const parent = item.parentElement;
+    if (event.detail === (item as HTMLElement).dataset.target) {
+      parent.classList.add('active');
+    } else {
+      parent.classList.remove('active');
+    }
+  });
 }
 
-function registerNavEvents() {
-  const navItems =
-    document.querySelectorAll('.nav-item > a') as NodeListOf<HTMLElement>;
-
-  for (const item of navItems) {
-
-    item.addEventListener('click', (event: MouseEvent) => {
-      router.navigateTo(item.dataset.target);
-      event.preventDefault();
-    });
-
-    // Update navbar state after a route change.
-    router.addEventListener('route-change', (event: CustomEvent) => {
-      const parent = item.parentElement;
-      if (event.detail === item.dataset.target) {
-        parent.classList.add('active');
-      } else {
-        parent.classList.remove('active');
-      }
-    });
-
-  }
-}
+// Navigate to current URL.
+router.navigateTo(window.location.pathname.substr(1));

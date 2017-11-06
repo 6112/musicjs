@@ -1,21 +1,44 @@
 import { Component } from './component';
 import { Emitter } from './emitter';
 
+/**
+ * A router that manages the navigation between components.
+ */
 export class Router extends Emitter {
+  /**
+   * Maps of IDs to their related components.
+   */
   private components = new Map<string, Component>();
+
+  /**
+   * Currently displayed component.
+   */
   private currentComponent: Component;
 
+  /**
+   * Constructor. Sets the default component of the router.
+   * @param defaultComponent Default component of the router.
+   */
   public constructor(private defaultComponent: Component) {
     super();
+    this.register(defaultComponent);
   }
 
-  public register(...components: Component[]) {
+  /**
+   * Register components.
+   * @param components Components to register.
+   */
+  public register(...components: Component[]): void {
     for (const component of components) {
       this.components.set(component.id, component);
     }
   }
 
-  public navigateTo(id: string) {
+  /**
+   * Navigates to a component.
+   * @param id ID of the component to navigate to.
+   */
+  public navigateTo(id: string): void {
     if (this.currentComponent) {
       this.currentComponent.hide();
     }
@@ -25,14 +48,20 @@ export class Router extends Emitter {
     this.dispatchRouteEvent();
   }
 
-  private dispatchRouteEvent() {
+  /**
+   * Dispatch a route-change event with the ID of the newly displayed component.
+   */
+  private dispatchRouteEvent(): void {
     const event = new CustomEvent('route-change', {
       detail: this.currentComponent.id
     });
     this.dispatchEvent(event);
   }
 
-  private updateUrl() {
+  /**
+   * Update the URL.
+   */
+  private updateUrl(): void {
     window.history.pushState(
       {}, this.currentComponent.title, '/' + this.currentComponent.id);
   }
