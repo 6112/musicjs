@@ -24,6 +24,7 @@ export class FetchApiFetcher implements Fetcher {
    * @param init Options object with custom settings.
    * @param authToken Authorization token if the endpoint requires one.
    */
+  // tslint:disable-next-line:prefer-function-over-method
   public async fetch(url: string, init?: RequestInit, authToken?: string): Promise<Response> {
     const request = new Request(url, init);
     if (authToken) {

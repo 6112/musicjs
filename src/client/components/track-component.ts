@@ -11,7 +11,7 @@ export class TrackComponent extends BaseComponent {
    * Track which details are shown.
    */
   private track: Track;
-  
+
   public constructor() {
     super('track', 'Chanson');
   }

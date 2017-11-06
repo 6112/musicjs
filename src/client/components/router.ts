@@ -40,7 +40,7 @@ export class Router extends Emitter {
    * @param id ID of the component to navigate to.
    * @param payload Optional payload to pass to the newly displayed component.
    */
-  public navigateTo(id: string, payload?: any): void {
+  public navigateTo(id: string, payload?: {}): void {
     if (this.currentComponent) {
       this.currentComponent.hide();
     }
