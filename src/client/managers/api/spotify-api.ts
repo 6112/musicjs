@@ -10,7 +10,7 @@ const API_TOKEN_URL = 'https://accounts.spotify.com/api/token';
 const SEARCH_URL = 'https://api.spotify.com/v1/search';
 
 /**
- * A client that can connect & do searches on a Spotify API backend. Singleton.
+ * A client that can connect & do searches on a Spotify API backend.
  */
 export class SpotifyApi implements MusicApi {
   /**
