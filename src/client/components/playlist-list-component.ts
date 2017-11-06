@@ -93,7 +93,6 @@ export class PlaylistListComponent extends BaseComponent {
    * @param playlist Playlist to open.
    */
   private openPlaylist(playlist: Playlist): void {
-    // TODO : use router ? to open the playlistComponent
-    console.log(playlist.name);
+    this.router.navigateTo('playlist', playlist);
   }
 }

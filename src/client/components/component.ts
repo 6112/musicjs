@@ -1,3 +1,5 @@
+import { Router } from './router';
+
 /**
  * Interface for a UI component.
  */
@@ -13,20 +15,31 @@ export interface Component {
   title: string;
 
   /**
+   * Reference to the router that registered the component.
+   */
+  router: Router;
+
+  /**
    * Hides the component.
    */
   hide(): void;
 
   /**
    * Displays the component.
+   * @param payload Payload passed to the component.
    */
-  show(): void;
+  show(playload: any): void;
 }
 
 /**
  * Base of the UI component.
  */
 export class BaseComponent implements Component {
+  /**
+   * Reference to the router that registered the component.
+   */
+  public router: Router;
+
   /**
    * Constructor.
    * @param id ID of the component. Must be unique.
@@ -36,8 +49,9 @@ export class BaseComponent implements Component {
 
   /**
    * Displays the UI component.
+   * @param payload Payload passed to the component.
    */
-  public show(): void {
+  public show(payload: any): void {
     document.getElementById(this.id).removeAttribute('hidden');
   }
 

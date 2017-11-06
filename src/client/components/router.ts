@@ -31,19 +31,21 @@ export class Router extends Emitter {
   public register(...components: Component[]): void {
     for (const component of components) {
       this.components.set(component.id, component);
+      component.router = this;
     }
   }
 
   /**
    * Navigates to a component.
    * @param id ID of the component to navigate to.
+   * @param payload Optional payload to pass to the newly displayed component.
    */
-  public navigateTo(id: string): void {
+  public navigateTo(id: string, payload?: any): void {
     if (this.currentComponent) {
       this.currentComponent.hide();
     }
     this.currentComponent = this.components.get(id) || this.defaultComponent;
-    this.currentComponent.show();
+    this.currentComponent.show(payload);
     this.updateUrl();
     this.dispatchRouteEvent();
   }
