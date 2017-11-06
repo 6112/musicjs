@@ -66,7 +66,19 @@
       </div>
 
       <div class="container" id="playlist" hidden>
-        
+        <div id="tracks-ul">
+          <template id="playlist-tracks-list-template">
+            {{#if tracks.length}}
+              <ul class="list-group">
+                {{#each tracks}}
+                  <li class="list-group-item" data-index="{{@index}}">{{title}} — {{artist}}</li>
+                {{/each}}
+              </ul>
+            {{else}}
+              <div class="alert alert-light">Cette liste de reproduction ne contient pas de chansons.</div>
+            {{/if}}
+          </template>
+        </div>
       </div>
     </main>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.js"></script>

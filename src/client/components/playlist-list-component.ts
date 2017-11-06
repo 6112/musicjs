@@ -61,7 +61,7 @@ export class PlaylistListComponent extends BaseComponent {
    */
   private renderPlaylistList(): void {
     this.playlistsUl.innerHTML = PlaylistListComponent.playlistListTemplate({ playlists: this.playlists });
-    const listItems = document.getElementsByClassName('list-group-item');
+    const listItems = document.querySelectorAll('#playlist-list .list-group-item');
     for (let i = 0; i < listItems.length; ++i) {
       const item = listItems.item(i) as HTMLElement;
       item.addEventListener('click', () => {

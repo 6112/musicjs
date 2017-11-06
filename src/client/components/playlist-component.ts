@@ -7,6 +7,13 @@ import { PlaylistManager } from '../managers/playlist-manager';
  */
 export class PlaylistComponent extends BaseComponent {
   /**
+   * Template for the list of tracks.
+   */
+  private static trackListTemplate = Handlebars.compile(
+    document.getElementById('playlist-tracks-list-template').innerHTML);
+
+
+  /**
    * Playlist which details are shown.
    */
   private playlist: Playlist;
