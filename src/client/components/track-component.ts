@@ -8,12 +8,21 @@ import { PlaylistManager } from '../managers/playlist-manager';
  */
 export class TrackComponent extends BaseComponent {
   /**
+   * Template for the HTML to display.
+   */
+  private static trackTemplate = Handlebars.template(
+    document.getElementById('track-template').innerHTML);
+
+  /**
    * Track which details are shown.
    */
   private track: Track;
 
+  private wrapper: HTMLElement;
+
   public constructor() {
     super('track', 'Chanson');
+    this.wrapper = document.getElementById('track');
   }
 
   /**
@@ -22,6 +31,8 @@ export class TrackComponent extends BaseComponent {
    */
   public show(payload: Track) {
     this.track = payload;
+    this.wrapper.innerHTML =
+      SearchComponent.trackTemplate(track);
   }
 
   /**

@@ -21,6 +21,7 @@ export class SpotifyApi implements MusicApi {
     return json.tracks.items.map((t) =>
       new Track(t.name,
                 t.artists[0].name,
+                t.album.name,
                 Math.round(t.duration_ms / MS_PER_SECOND),
                 t.external_urls.spotify,
                 Provider.SPOTIFY));
@@ -68,6 +69,7 @@ interface RawTrack {
   id: string;
   name: string;
   artists: Artist[];
+  album: Album;
   duration_ms: number;
   external_urls: ExternalUrl;   // For opening in a new tab
   uri: string;                  // For opening in the 'native' spotify app
@@ -88,6 +90,25 @@ interface Artist {
   id: string;
   name: string;
   external_urls: ExternalUrl;
+}
+
+/**
+ * Raw (simplified) Album object returned by the Spotify API.
+ */
+interface Album {
+  id: string;
+  name: string;
+  external_urls: ExternalUrl;
+  images: Image[];
+}
+
+/**
+ * Image object returned by the Spotify API.
+ */
+interface Image {
+  height: number;
+  width: number;
+  url: string;
 }
 
 /**

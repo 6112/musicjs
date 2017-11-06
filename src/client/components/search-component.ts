@@ -44,6 +44,11 @@ export class SearchComponent extends BaseComponent {
   private searchResults: HTMLElement;
 
   /**
+   * Array of result tracks for the current search.
+   */
+  private tracks: Track[];
+
+  /**
    * Used to make searches.
    */
   private searchManager: SearchManager;
@@ -72,9 +77,24 @@ export class SearchComponent extends BaseComponent {
     if (!val || !/\S/.test(val)) {
       // Search field empty. Nothing to do.
     } else {
-      const tracks = await this.searchManager.search(val);
-      this.searchResults.innerHTML = SearchComponent.renderTrackList(tracks);
+      this.tracks = await this.searchManager.search(val);
+      this.searchResults.innerHTML =
+        SearchComponent.renderTrackList(this.tracks);
+      this.attachEvents();
     }
+  }
+
+  private attachEvents(tracks: Track[]): void {
+    const anchors = this.searchResults.querySelectorAll('.list-group-item');
+    for (const anchor of anchors) {
+      anchor.addEventListener('click', () => {
+        this.openTrack(this.tracks[+anchor.dataset.index]);
+      });
+    }
+  }
+
+  private openTrack(track: Track[]): void {
+    // TODO
   }
 
   /**

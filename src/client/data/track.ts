@@ -13,23 +13,26 @@ export class Track {
     const parsed = JSON.parse(json) as {
       title: string;
       artist: string;
+      album: string;
       length: number;
       uri: string;
       provider: Provider;
     };
-    return new Track(parsed.title, parsed.artist, parsed.length, parsed.uri, parsed.provider);
+    return new Track(parsed.title, parsed.artist, parsed.album,
+                     parsed.length, parsed.uri, parsed.provider);
   }
 
-  /**
+  /**n
    * Create a new track.
    * @param title Title of the track.
    * @param artist Artist of the track.
    * @param length Length of the track in seconds.
-   * @param uri URI of the track.
+   * @param uri URI to the audio file for the track.
    * @param provider Provider of the track.
    */
   public constructor(public title: string,
                      public artist: string,
+                     public album: string,
                      public length: number,
                      public uri: string,
                      public provider: Provider) { }
@@ -41,6 +44,7 @@ export class Track {
   public serialize(): string {
     return JSON.stringify({
       artist: this.artist,
+      album: this.album,
       length: this.length,
       provider: this.provider,
       title: this.title,

@@ -44,7 +44,7 @@ QUnit.test('should delete playlists correctly', (assert) => {
 });
 
 QUnit.test('should add tracks to playlists correctly', (assert) => {
-  const newTrack = new Track('Look what you made me do', 'Taylor Swift', trackLength1,
+  const newTrack = new Track('Look what you made me do', 'Taylor Swift', 'Reputation', trackLength1,
                              'https://www.youtube.com/watch?v=3tmd-ClpJxA', Provider.SPOTIFY);
   const taytay = PlaylistManager.newPlaylist('taytay');
   const playlist = new Playlist('taytay', []);
@@ -61,9 +61,9 @@ QUnit.test('should add tracks to playlists correctly', (assert) => {
 });
 
 QUnit.test('should remove tracks from playlists correctly', (assert) => {
-  const newTrack1 = new Track('Look what you made me do', 'Taylor Swift', trackLength1,
+  const newTrack1 = new Track('Look what you made me do', 'Taylor Swift', 'Reputation', trackLength1,
                               'https://www.youtube.com/watch?v=3tmd-ClpJxA', Provider.SPOTIFY);
-  const newTrack2 = new Track('Blank space', 'Taylor Swift', trackLength2,
+  const newTrack2 = new Track('Blank space', 'Taylor Swift', '1989', trackLength2,
                               'https://www.youtube.com/watch?v=e-ORhEE9VVg', Provider.SPOTIFY);
   const taytay = PlaylistManager.newPlaylist('taytay');
   PlaylistManager.addToPlaylist(newTrack1, taytay);
@@ -92,9 +92,9 @@ QUnit.test('should move tracks in playlists correctly', (assert) => {
   const second = 1;
   const third = 2;
   const fourth = 3;
-  const newTrack1 = new Track('Look what you made me do', 'Taylor Swift', trackLength1,
+  const newTrack1 = new Track('Look what you made me do', 'Taylor Swift', 'Reputation', trackLength1,
                               'https://www.youtube.com/watch?v=3tmd-ClpJxA', Provider.SPOTIFY);
-  const newTrack2 = new Track('Blank space', 'Taylor Swift', trackLength2,
+  const newTrack2 = new Track('Blank space', 'Taylor Swift', '1989', trackLength2,
                               'https://www.youtube.com/watch?v=e-ORhEE9VVg', Provider.SPOTIFY);
   const taytay = PlaylistManager.newPlaylist('taytay');
   PlaylistManager.addToPlaylist(newTrack1, taytay);
