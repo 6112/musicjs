@@ -43,6 +43,7 @@ export class SearchManager {
     const spotify = this.spotifyApi.search(text);
     const soundcloud = this.soundcloudApi.search(text);
     const deezer = this.deezerApi.search(text);
-    return Promise.all([spotify, soundcloud, deezer]).then((results) => [].concat.apply([], results) as Track[]);
+    const results = await Promise.all([spotify, soundcloud, deezer]);
+    return [].concat.apply([], results) as Track[];
   }
 }
