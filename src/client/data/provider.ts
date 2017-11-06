@@ -1,5 +1,5 @@
 export enum Provider {
-  SOUNDCLOUD,
-  SPOTIFY,
-  DEEZER
+  SOUNDCLOUD = "soundcloud",
+  SPOTIFY = "spotify",
+  DEEZER = "deezer"
 }
