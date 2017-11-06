@@ -55,6 +55,11 @@ export class PlaylistComponent extends BaseComponent {
 
     this.tracks = document.getElementById('tracks-ul');
     this.tracks.innerHTML = this.renderTracks();
+    this.tracks.querySelectorAll('.list-group-item').forEach((track: Element) => {
+      track.addEventListener('click', () => {
+        this.openTrack(+(track as HTMLElement).dataset.index);
+      });
+    });
 
     this.deleteButton = document.getElementById('delete-playlist');
     this.deleteButton.addEventListener('click', () => {
@@ -106,6 +111,7 @@ export class PlaylistComponent extends BaseComponent {
    */
   public openTrack(pos: number): void {
     // TODO : navigate to the track component
+    this.router.navigateTo('track', this.playlist.tracks[pos]);
   }
 
   /**
