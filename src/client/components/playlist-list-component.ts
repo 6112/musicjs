@@ -43,7 +43,7 @@ export class PlaylistListComponent extends BaseComponent {
   private playlists: Playlist[];
 
   public constructor() {
-    super('playlist-list', 'Playlists');
+    super('playlist-list', 'Listes de reproduction');
     this.playlists = PlaylistManager.loadPlaylists();
     this.playlistsUl = document.getElementById('playlists-ul');
     this.nameInput = document.getElementById('playlist-name-input') as HTMLInputElement;
