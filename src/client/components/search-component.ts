@@ -1,6 +1,7 @@
 import { Track } from '../data/track';
 import { FetchApiFetcher } from '../managers/api/fetch';
-import { SpotifyApi, SpotifyTokenManager } from '../managers/api/spotify-api';
+import { SpotifyTokenManager } from '../managers/api/spotify-api';
+import { SearchManager } from '../managers/search-manager';
 import { BaseComponent } from './component';
 import { Debouncer } from './debouncer';
 
@@ -17,20 +18,22 @@ export class SearchComponent extends BaseComponent {
   private searchResults: HTMLElement;
 
   // TODO: use SearchManager once it's implemented, instead of SpotifyApi
-  private spotify: SpotifyApi;
+  private searchManager: SearchManager;
 
   public constructor() {
     super('search', 'Recherche');
     this.searchInput =
       document.getElementById('search-input') as HTMLInputElement;
     this.searchInput.value = '';
-    this.searchInput.addEventListener('input', this.onSearchInput.bind(this));
+    this.searchInput.addEventListener('input', () => {
+      this.onSearchInput();
+    });
 
     this.searchResults = document.getElementById('search-results');
 
     const fetcher = new FetchApiFetcher();
     const spotifyTokenManager = new SpotifyTokenManager();
-    this.spotify = new SpotifyApi(fetcher, spotifyTokenManager);
+    this.searchManager = new SearchManager(fetcher, spotifyTokenManager);
 
     this.searchResults.innerHTML = this.renderTrackList([]);
   }
@@ -41,18 +44,19 @@ export class SearchComponent extends BaseComponent {
     });
   }
 
-  private async debouncedSpotifySearch() {
+  private async debouncedSearch() {
     const val = this.searchInput.value;
     if (!val || !/\S/.test(val)) {
       // Search field empty. Nothing to do.
     } else {
-      const tracks = await this.spotify.search(val);
-      console.log(tracks);
+      const tracks = await this.searchManager.search(val);
       this.searchResults.innerHTML = this.renderTrackList(tracks);
     }
   }
 
   private onSearchInput() {
-    this.searchDebouncer.debounce(this.debouncedSpotifySearch.bind(this));
+    this.searchDebouncer.debounce(() => {
+      this.debouncedSearch();
+    });
   }
 }

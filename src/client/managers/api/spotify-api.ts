@@ -22,7 +22,6 @@ export class SpotifyApi implements MusicApi {
 
   /**
    * Search for tracks on Spotify.
-   *
    * @param query Track name to search for.
    * @return Promise that resolves with the list of matching albums.
    */
@@ -32,7 +31,6 @@ export class SpotifyApi implements MusicApi {
     const authToken = await this.tokenManager.getToken();
     const response = await this.fetcher.fetch(url, {}, authToken);
     const json = await response.json();
-    console.log(json);
     return this.deserialize(json as SearchResponse);
   }
 
