@@ -2,7 +2,8 @@ import { Component } from './component';
 import { Emitter } from './emitter';
 
 /**
- * A router that manages the navigation between components.
+ * A router that manages the navigation between components. Fires a
+ * 'route-change' event when the route changes.
  */
 export class Router extends Emitter {
   /**
@@ -37,18 +38,27 @@ export class Router extends Emitter {
   }
 
   /**
-   * Navigates to a component.
+   * Navigate to a component: shows it, updates the URL, and fires an event.
    * @param id ID of the component to navigate to.
    * @param payload Optional payload to pass to the newly displayed component.
    */
   public navigateTo(id: string, payload?: {}): void {
+    this.showComponent(id, payload);
+    this.updateUrl(payload);
+    this.dispatchRouteEvent();
+  }
+
+  /**
+   * Show a component, and hide the previously active component.
+   * @param id ID of the component to navigate to.
+   * @param paylaod Optional payload to pass to the newly displayed component.
+   */
+  private showComponent(id: string, payload: {}): void {
     if (this.currentComponent) {
       this.currentComponent.hide();
     }
     this.currentComponent = this.components.get(id) || this.defaultComponent;
     this.currentComponent.show(payload);
-    this.updateUrl(payload);
-    this.dispatchRouteEvent();
   }
 
   /**
@@ -64,13 +74,18 @@ export class Router extends Emitter {
   /**
    * Called when the navigates in the history, e.g. by hitting the browser's
    * "back" button.
+   * @param event Event object from the browser.
    */
   private onPopState(event: PopStateEvent): void {
-    console.log(window.location.pathname, event.state);
+    const id = window.location.pathname.substr(1);
+    const payload = event.state;
+    this.showComponent(id, payload);
+    this.dispatchRouteEvent();
   }
 
   /**
    * Update the URL.
+   * @param payload Payload to save along with the URL in the browser's history.
    */
   private updateUrl(payload: {}): void {
     window.history.pushState(payload || null,
