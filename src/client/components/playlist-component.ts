@@ -1,6 +1,7 @@
 import { BaseComponent } from './component';
 import { Playlist } from '../data/playlist';
 import { PlaylistManager } from '../managers/playlist-manager';
+import { PlayerManager } from '../managers/player-manager';
 
 /**
  * Manages the UI of the details of a playlist.
@@ -23,7 +24,11 @@ export class PlaylistComponent extends BaseComponent {
    */
   private playlist: Playlist;
 
-  public constructor() {
+  /**
+   * Constructor.
+   * @param audio Audio object to use.
+   */
+  public constructor(private audio: HTMLAudioElement) {
     super('playlist', 'Liste de reproduction');
   }
 
@@ -74,7 +79,7 @@ export class PlaylistComponent extends BaseComponent {
    * Navigate to the PlayerComponent.
    */
   public playPlaylist(): void {
-    // TODO : play the playlist by calling the PlayerManager
+    PlayerManager.playPlaylist(this.playlist, this.audio);
   }
 
   /**

@@ -2,6 +2,7 @@ import { BaseComponent } from './component';
 import { Playlist } from '../data/playlist';
 import { Track } from '../data/track';
 import { PlaylistManager } from '../managers/playlist-manager';
+import { PlayerManager } from '../managers/player-manager';
 
 /**
  * Manages the UI of the details of a track.
@@ -12,7 +13,11 @@ export class TrackComponent extends BaseComponent {
    */
   private track: Track;
 
-  public constructor() {
+  /**
+   * Constructor.
+   * @param audio Audio object to use.
+   */
+  public constructor(private audio: HTMLAudioElement) {
     super('track', 'Chanson');
   }
 
@@ -44,6 +49,6 @@ export class TrackComponent extends BaseComponent {
    * Navigate to the PlayerComponent.
    */
   public playTrack(): void {
-    // TODO : navigate to the PlayerComponent with the track.
+    PlayerManager.playTrack(this.track, this.audio);
   }
 }

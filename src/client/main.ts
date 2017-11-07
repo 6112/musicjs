@@ -4,11 +4,13 @@ import { SearchComponent } from './components/search-component';
 import { PlaylistComponent } from './components/playlist-component';
 import { TrackComponent } from './components/track-component';
 
+const audio = new Audio();
+
 // Create router and register components.
 const search = new SearchComponent();
 const playlistList = new PlaylistListComponent();
-const playlist = new PlaylistComponent();
-const track = new TrackComponent();
+const playlist = new PlaylistComponent(audio);
+const track = new TrackComponent(audio);
 
 const DEFAULT_COMPONENT = search;
 
