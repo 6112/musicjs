@@ -43,17 +43,24 @@ export class PlaylistListComponent extends BaseComponent {
   private playlists: Playlist[];
 
   public constructor() {
-    super('playlist-list', 'Playlists');
-    this.playlists = PlaylistManager.loadPlaylists();
+    super('playlist-list', 'Listes de reproduction');
     this.playlistsUl = document.getElementById('playlists-ul');
     this.nameInput = document.getElementById('playlist-name-input') as HTMLInputElement;
     this.addButton = document.getElementById('create-playlist-btn');
     this.inputGroup = document.getElementById('name-input-group');
     this.errorMessage = document.getElementById('add-playlist-error');
-    this.renderPlaylistList();
     this.addButton.addEventListener('click', () => {
       this.addPlaylist();
     });
+  }
+
+  /**
+   * Show the component.
+   */
+  public show(): void {
+    super.show();
+    this.playlists = PlaylistManager.loadPlaylists();
+    this.renderPlaylistList();
   }
 
   /**
@@ -61,7 +68,7 @@ export class PlaylistListComponent extends BaseComponent {
    */
   private renderPlaylistList(): void {
     this.playlistsUl.innerHTML = PlaylistListComponent.playlistListTemplate({ playlists: this.playlists });
-    const listItems = document.getElementsByClassName('list-group-item');
+    const listItems = document.querySelectorAll('#playlist-list .list-group-item');
     for (let i = 0; i < listItems.length; ++i) {
       const item = listItems.item(i) as HTMLElement;
       item.addEventListener('click', () => {
@@ -93,7 +100,6 @@ export class PlaylistListComponent extends BaseComponent {
    * @param playlist Playlist to open.
    */
   private openPlaylist(playlist: Playlist): void {
-    // TODO : use router ? to open the playlistComponent
-    console.log(playlist.name);
+    this.router.navigateTo('playlist', playlist);
   }
 }

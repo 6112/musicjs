@@ -3,26 +3,38 @@ import { Provider } from '../../data/provider';
 import { Fetcher } from './fetch';
 import { MusicApi } from './music-api';
 
-const CLIENT_ID = 'af1d0f4923bc4391a7bcd1f14f66a051';
-const CLIENT_SECRET = 'e281a32169f54b0685179322910ceca2';
-
-const API_TOKEN_URL = 'https://accounts.spotify.com/api/token';
 const SEARCH_URL = 'https://api.spotify.com/v1/search';
 
 /**
- * A client that can connect & do searches on a Spotify API backend. Singleton.
+ * Number of milliseconds in a second.
+ */
+const MS_PER_SECOND = 1000;
+
+/**
+ * A client that can connect & do searches on a Spotify API backend.
  */
 export class SpotifyApi implements MusicApi {
   /**
+   * Deserialize a SearchResponse object.
+   */
+  private static deserialize(json: SearchResponse): Track[] {
+    return json.tracks.items.map((t) =>
+      new Track(t.name,
+                t.artists[0].name,
+                Math.round(t.duration_ms / MS_PER_SECOND),
+                t.preview_url,
+                Provider.SPOTIFY));
+  }
+
+  /**
    * Default constructor.
    */
-  constructor(private fetcher: Fetcher,
-              private tokenManager: SpotifyTokenManager) {
+  public constructor(private fetcher: Fetcher,
+                     private tokenManager: SpotifyTokenManager) {
   }
 
   /**
    * Search for tracks on Spotify.
-   *
    * @param query Track name to search for.
    * @return Promise that resolves with the list of matching albums.
    */
@@ -32,21 +44,7 @@ export class SpotifyApi implements MusicApi {
     const authToken = await this.tokenManager.getToken();
     const response = await this.fetcher.fetch(url, {}, authToken);
     const json = await response.json();
-    console.log(json);
-    return this.deserialize(json as SearchResponse);
-  }
-
-  /**
-   * Deserialize a SearchResponse object.
-   */
-  private deserialize(json: SearchResponse): Track[] {
-    return json.tracks.items.map((t) => {
-      return new Track(t.name,
-                       t.artists[0].name,
-                       Math.round(t.duration_ms / 1000),
-                       t.external_urls.spotify,
-                       Provider.SPOTIFY);
-    });
+    return SpotifyApi.deserialize(json as SearchResponse);
   }
 }
 
@@ -71,8 +69,9 @@ interface RawTrack {
   name: string;
   artists: Artist[];
   duration_ms: number;
-  external_urls: ExternalUrl; // for opening in a new tab
-  uri: string;                 // for opening in the 'native' spotify app
+  preview_url: string;
+  external_urls: ExternalUrl;   // For opening in a new tab
+  uri: string;                  // For opening in the 'native' spotify app
 }
 
 /**
@@ -80,7 +79,7 @@ interface RawTrack {
  * Spotify API.
  */
 interface ExternalUrl {
-  spotify: string;               // link to the resource on spotify.com
+  spotify: string;               // Link to the resource on spotify.com
 }
 
 /**
@@ -96,16 +95,26 @@ interface Artist {
  * Manages an API token and automatically refreshes it when needed. Singleton.
  */
 export class SpotifyTokenManager {
+  /**
+   * Auth token from the HTTP server.
+   */
   private token: string = undefined;
 
-  public getToken(): Promise<string> {
+  /**
+   * Return an auth token that can be used when making requests to the Spotify
+   * API.
+   */
+  public async getToken(): Promise<string> {
     if (this.token) {
       // TODO: refresh token if it's expired
-      return Promise.resolve(this.token);
+      return this.token;
     }
     return this.refreshToken();
   }
 
+  /**
+   * Refresh the auth token if it's expired.
+   */
   public async refreshToken(): Promise<string> {
     const response = await fetch('/spotify_auth_token');
     this.token = await response.text();

@@ -1,4 +1,3 @@
-type TimerId = number;
 type Callback = () => void;
 
 /**
@@ -7,10 +6,21 @@ type Callback = () => void;
  * we don't want to spam the servers with requests.
  */
 export class Debouncer {
-  private timer: TimerId = null;
+  /**
+   * Current timeout.
+   */
+  private timer: number = null;
 
+  /**
+   * Constructor.
+   * @param delay Amount of time to wait, in milliseconds.
+   */
   public constructor(private delay: number) {}
 
+  /**
+   * Debounces the callback for a certain time.
+   * @param callback Function called after the debounce.
+   */
   public debounce(callback: Callback): void {
     if (this.timer) {
       window.clearTimeout(this.timer);

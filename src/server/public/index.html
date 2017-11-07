@@ -1,92 +1,98 @@
 <!DOCTYPE html>
-
-<meta charset=utf-8>
-<title>music.js</title>
-<link rel=stylesheet type=text/css href=style.css>
-<link rel=stylesheet type=text/css href=https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css>
-
-<main>
-  <nav class="navbar navbar-dark bg-dark mb-3">
-    <div class=navbar-brand>
-      music.js
-    </div>
-    <div class="navbar-expand">
-      <ul class=navbar-nav>
-        <li class="nav-item">
-          <a class=nav-link href="#" data-target=search>
-            Recherche
-          </a>
-        </li>
-        <li class=nav-item>
-          <a class=nav-link href="#" data-target=playlist-list>
-            Playlists
-          </a>
-        </li>
-      </ul>
-    </div>
-  </nav>
-
-  <div class=container hidden id=search>
-    <input type=text placeholder="Entrez un nom de chanson..."
-           id=search-input class="form-control mb-3">
-
-    <div id=search-results>
-      <template id=track-list-template>
-        {{#if tracks.length}}
-        {{else}}
-          <div class="alert alert-light">
-            Aucun résultat. Utilisez le formulaire ci-dessus pour chercher une
-            chanson.
-          </div>
-        {{/if}}
-
-        <ul class=list-group>
-          {{#each tracks}}
-            <li class=list-group-item>
-              <img src="/img/{{provider}}.png" width=24 height=24 class="float-right ml-1">
-              <a href="{{uri}}" target=_blank rel="noopener noreferrer">
-                {{artist}} — {{title}}
-              </a>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>music.js</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" />
+  </head>
+  <body>
+    <main>
+      <nav class="navbar navbar-dark bg-dark mb-3">
+        <div class="navbar-brand">music.js</div>
+        <div class="navbar-expand">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="#" data-target="search">Recherche</a>
             </li>
-
-          {{/each}}
-        </ul>
-      </template>
-    </div>
-  </div>
-
-  <div class=container hidden id=playlist-list>
-    <div class="input-group mb-3" id=name-input-group>
-      <input type=text placeholder="Entrez un nom de playlist..."
-             class=form-control id=playlist-name-input>
-      <span class=input-group-btn>
-        <button type=button class="btn btn-primary" id=create-playlist-btn>
-          Ajouter
-        </button>
-      </span>
-    </div>
-    <div class=invalid-feedback id=add-playlist-error></div>
-
-    <div id=playlists-ul>
-      <template id=playlist-list-template>
-        {{#if playlists.length}}
-        {{else}}
-          <div class="alert alert-light">
-            Il n'y a pas encore de playlists. Créez une playlist avec le
-            formulaire ci-dessus.
-          </div>
-        {{/if}}
-        <ul class=list-group>
-          {{#each playlists}}
-            <li class=list-group-item data-index={{@index}}>
-              {{name}} — {{tracks.length}} chansons
+            <li class="nav-item">
+              <a class="nav-link" href="#" data-target="playlist-list">Listes de reproduction</a>
             </li>
-          {{/each}}
-        </ul>
-      </template>
-    </div>
-  </div>
-</main>
+          </ul>
+        </div>
+      </nav>
 
-<script src=https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.js></script>
-<script data-main=main src=https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js></script>
+      <div class="container" id="search" hidden>
+        <input type="text" placeholder="Entrez un nom de chanson..." id="search-input" class="form-control mb-3" />
+        <div id="search-results">
+          <template id="track-list-template">
+            {{#if tracks.length}}
+              <ul class="list-group">
+                {{#each tracks}}
+                  <li class="list-group-item">
+                    <img src="/img/{{provider}}.png" width="24" height="24" class="float-right m1-1" />
+                    <a href="{{uri}}" target="_blank" rel="noopener noreferrer">{{artist}} — {{title}}</a>
+                  </li>
+                {{/each}}
+              </ul>
+            {{else}}
+              <div class="aleter alert-light">Aucun résultat. Utilisez le formulaire ci-dessus pour chercher une chanson.</div>
+            {{/if}}
+          </template>
+        </div>
+      </div>
+
+      <div class="container" id="playlist-list" hidden>
+        <div class="input-group mb-3" id="name-input-group">
+          <input type="text" placeholder="Entrez un nom de liste de reproduction..." class="form-control" id="playlist-name-input" />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-primary" id="create-playlist-btn">Ajouter</button>
+          </span>
+        </div>
+        <div class="invalid-feedback" id="add-playlist-error"></div>
+        <div id="playlists-ul">
+          <template id="playlist-list-template">
+            {{#if playlists.length}}
+              <ul class="list-group">
+                {{#each playlists}}
+                  <li class="list-group-item" data-index="{{@index}}">{{name}} — {{tracks.length}} chansons</li>
+                {{/each}}
+              </ul>
+            {{else}}
+              <div class="alert alert-light">Il n'y a pas encore de listes de reproduction. Créez-en une avec le formulaire ci-dessus.</div>
+            {{/if}}
+          </template>
+        </div>
+      </div>
+
+      <div class="container" id="playlist" hidden>
+        <div id="playlist-info" class="pb-3">
+            <template id="playlist-info-template">
+              <h1>{{playlist.name}}</h1>
+              <p>{{playlist.tracks.length}} chanson{{#if plural}}s{{/if}}</p>
+              <button type="button" class="btn btn-primary" id="play-playlist">Jouer la liste de reproduction</button>
+              <button type="button" class="btn btn-primary" id="delete-playlist">Supprimer la liste de reproduction</button>
+            </template>
+        </div>
+        <div id="tracks-ul">
+          <template id="playlist-tracks-list-template">
+            {{#if playlist.tracks.length}}
+              <ul class="list-group">
+                {{#each playlist.tracks}}
+                  <li class="list-group-item" data-index="{{@index}}" draggable="true">
+                    <button type="button" class="btn btn-primary ml-3 delete-track" data-index="{{@index}}">❌</button>
+                    {{title}} — {{artist}}
+                  </li>
+                {{/each}}
+              </ul>
+            {{else}}
+              <div class="alert alert-light">Cette liste de reproduction ne contient pas de chansons.</div>
+            {{/if}}
+          </template>
+        </div>
+      </div>
+    </main>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.js"></script>
+    <script type="text/javascript" data-main="main" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js"></script>
+  </body>
+</html>
