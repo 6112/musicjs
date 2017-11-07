@@ -56,7 +56,6 @@ export class PlaylistListComponent extends BaseComponent {
 
   /**
    * Show the component.
-   * @param _ unused.
    */
   public show(): void {
     super.show();
