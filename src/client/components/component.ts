@@ -28,7 +28,7 @@ export interface Component {
    * Displays the component.
    * @param payload Payload passed to the component.
    */
-  show(payload: {}): void;
+  show(payload?: {}): void;
 }
 
 /**
@@ -51,7 +51,7 @@ export class BaseComponent implements Component {
    * Displays the UI component.
    * @param payload Payload passed to the component.
    */
-  public show(payload: {}): void {
+  public show(payload?: {}): void {
     document.getElementById(this.id).removeAttribute('hidden');
   }
 

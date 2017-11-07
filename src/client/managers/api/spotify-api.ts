@@ -23,7 +23,7 @@ export class SpotifyApi implements MusicApi {
                 t.artists[0].name,
                 t.album.name,
                 Math.round(t.duration_ms / MS_PER_SECOND),
-                t.external_urls.spotify,
+                t.preview_url,
                 Provider.SPOTIFY));
   }
 
@@ -71,6 +71,7 @@ interface RawTrack {
   artists: Artist[];
   album: Album;
   duration_ms: number;
+  preview_url: string;
   external_urls: ExternalUrl;   // For opening in a new tab
   uri: string;                  // For opening in the 'native' spotify app
 }

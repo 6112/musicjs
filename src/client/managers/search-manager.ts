@@ -1,6 +1,6 @@
 import { Track } from '../data/track';
 import { SpotifyApi, SpotifyTokenManager } from './api/spotify-api';
-import { SoundCloudApi } from './api/soundcloud-api';
+import { JamendoApi } from './api/jamendo-api';
 import { DeezerApi } from './api/deezer-api';
 import { Fetcher } from './api/fetch';
 
@@ -14,9 +14,9 @@ export class SearchManager {
   private spotifyApi: SpotifyApi;
 
   /**
-   * SoundCloud API.
+   * Jamendo API.
    */
-  private soundcloudApi: SoundCloudApi;
+  private jamendoApi: JamendoApi;
 
   /**
    * Deezer API.
@@ -30,8 +30,8 @@ export class SearchManager {
    */
   public constructor(fetcher: Fetcher, tokenManager: SpotifyTokenManager) {
     this.spotifyApi = new SpotifyApi(fetcher, tokenManager);
-    this.soundcloudApi = new SoundCloudApi();
-    this.deezerApi = new DeezerApi();
+    this.jamendoApi = new JamendoApi(fetcher);
+    this.deezerApi = new DeezerApi(fetcher);
   }
 
   /**
@@ -41,9 +41,10 @@ export class SearchManager {
    */
   public async search(text: string): Promise<Track[]> {
     const spotify = this.spotifyApi.search(text);
-    const soundcloud = this.soundcloudApi.search(text);
+    const jamendo = this.jamendoApi.search(text);
     const deezer = this.deezerApi.search(text);
-    const results = await Promise.all([spotify, soundcloud, deezer]);
-    return [].concat.apply([], results) as Track[];
+    const results = await Promise.all([spotify, jamendo, deezer]);
+    const tracks = [].concat.apply([], results) as Track[];
+    return tracks.filter((track: Track) => track.uri);
   }
 }

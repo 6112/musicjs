@@ -45,7 +45,7 @@
 
       <div class="container" id="playlist-list" hidden>
         <div class="input-group mb-3" id="name-input-group">
-          <input type="text" placeholder="Entrez un nom de playlist..." class="form-control" id="playlist-name-input" />
+          <input type="text" placeholder="Entrez un nom de liste de reproduction..." class="form-control" id="playlist-name-input" />
           <span class="input-group-btn">
             <button type="button" class="btn btn-primary" id="create-playlist-btn">Ajouter</button>
           </span>
@@ -67,12 +67,23 @@
       </div>
 
       <div class="container" id="playlist" hidden>
+        <div id="playlist-info" class="pb-3">
+            <template id="playlist-info-template">
+              <h1>{{playlist.name}}</h1>
+              <p>{{playlist.tracks.length}} chanson{{#if plural}}s{{/if}}</p>
+              <button type="button" class="btn btn-primary" id="play-playlist">Jouer la liste de reproduction</button>
+              <button type="button" class="btn btn-primary" id="delete-playlist">Supprimer la liste de reproduction</button>
+            </template>
+        </div>
         <div id="tracks-ul">
           <template id="playlist-tracks-list-template">
-            {{#if tracks.length}}
+            {{#if playlist.tracks.length}}
               <ul class="list-group">
-                {{#each tracks}}
-                  <li class="list-group-item" data-index="{{@index}}">{{title}} — {{artist}}</li>
+                {{#each playlist.tracks}}
+                  <li class="list-group-item" data-index="{{@index}}" draggable="true">
+                    <button type="button" class="btn btn-primary ml-3 delete-track" data-index="{{@index}}">❌</button>
+                    {{title}} — {{artist}}
+                  </li>
                 {{/each}}
               </ul>
             {{else}}

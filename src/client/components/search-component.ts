@@ -24,7 +24,7 @@ export class SearchComponent extends BaseComponent {
    * Renders the list of tracks found.
    * @param tracks List of tracks found.
    */
-  private static renderTrackList(tracks: Track[]) {
+  private static renderTrackList(tracks: Track[]): string {
     return SearchComponent.trackListTemplate({ tracks });
   }
 

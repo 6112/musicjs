@@ -10,13 +10,15 @@ export class PlaylistManager {
    * Add a track to a playlist.
    * @param track Track to add.
    * @param playlist Playlist to add to.
+   * @return Modified playlist.
    */
-  public static addToPlaylist(track: Track, playlist: Playlist): void {
+  public static addToPlaylist(track: Track, playlist: Playlist): Playlist {
     const playlists = PlaylistManager.load();
     const found = PlaylistManager.findPlaylist(playlist, playlists);
     if (found) {
       found.tracks.push(track);
       PlaylistManager.save(playlists);
+      return found;
     } else {
       PlaylistManager.notFound(playlist);
     }
@@ -50,8 +52,9 @@ export class PlaylistManager {
    * @param playlist Playlist containing the track.
    * @param oldPos Current position of the track.
    * @param newPos New position of the track.
+   * @return Modified playlist.
    */
-  public static moveTrack(playlist: Playlist, oldPos: number, newPos: number): void {
+  public static moveTrack(playlist: Playlist, oldPos: number, newPos: number): Playlist {
     const playlists = PlaylistManager.load();
     const found = PlaylistManager.findPlaylist(playlist, playlists);
     if (found) {
@@ -59,6 +62,7 @@ export class PlaylistManager {
         const track = found.tracks.splice(oldPos, 1)[0];
         found.tracks.splice(newPos, 0, track);
         PlaylistManager.save(playlists);
+        return found;
       } else {
         PlaylistManager.outOfBounds(oldPos, found);
       }
@@ -88,14 +92,16 @@ export class PlaylistManager {
    * Remove a track from a playlist.
    * @param playlist Playlist containing the track.
    * @param pos Position of the track to remove.
+   * @return Modified playlist.
    */
-  public static removeTrack(playlist: Playlist, pos: number): void {
+  public static removeTrack(playlist: Playlist, pos: number): Playlist {
     const playlists = PlaylistManager.load();
     const found = PlaylistManager.findPlaylist(playlist, playlists);
     if (found) {
       if (pos >= 0 && pos < found.tracks.length) {
         found.tracks.splice(pos, 1);
         PlaylistManager.save(playlists);
+        return found;
       } else {
         PlaylistManager.outOfBounds(pos, found);
       }

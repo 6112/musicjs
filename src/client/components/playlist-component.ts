@@ -1,6 +1,7 @@
 import { BaseComponent } from './component';
 import { Playlist } from '../data/playlist';
 import { PlaylistManager } from '../managers/playlist-manager';
+import { PlayerManager } from '../managers/player-manager';
 
 /**
  * Manages the UI of the details of a playlist.
@@ -12,13 +13,22 @@ export class PlaylistComponent extends BaseComponent {
   private static trackListTemplate = Handlebars.compile(
     document.getElementById('playlist-tracks-list-template').innerHTML);
 
+  /**
+   * Template for the playlist's info.
+   */
+  private static playlistInfoTemplate = Handlebars.compile(
+    document.getElementById('playlist-info-template').innerHTML);
 
   /**
    * Playlist which details are shown.
    */
   private playlist: Playlist;
 
-  public constructor() {
+  /**
+   * Constructor.
+   * @param audio Audio object to use.
+   */
+  public constructor(private audio: HTMLAudioElement) {
     super('playlist', 'Liste de reproduction');
   }
 
@@ -29,6 +39,8 @@ export class PlaylistComponent extends BaseComponent {
   public show(payload: Playlist) {
     super.show(payload);
     this.playlist = payload;
+    this.renderPlaylistInfo();
+    this.renderTracks();
   }
 
   /**
@@ -47,8 +59,9 @@ export class PlaylistComponent extends BaseComponent {
    */
   public removeTrack(pos: number): void {
     if (confirm('Ëtes-vous sûr de vouloir enlever cette chanson ?')) {
-      PlaylistManager.removeTrack(this.playlist, pos);
-      // TODO : re-render the list of tracks
+      this.playlist = PlaylistManager.removeTrack(this.playlist, pos);
+      this.renderTracks();
+      this.renderPlaylistInfo();
     }
   }
 
@@ -58,15 +71,15 @@ export class PlaylistComponent extends BaseComponent {
    * @param newPos New position of the track.
    */
   public moveTrack(oldPos: number, newPos: number): void {
-    PlaylistManager.moveTrack(this.playlist, oldPos, newPos);
-    // TODO : re-render the list of tracks ?
+    this.playlist = PlaylistManager.moveTrack(this.playlist, oldPos, newPos);
+    this.renderTracks();
   }
 
   /**
    * Navigate to the PlayerComponent.
    */
   public playPlaylist(): void {
-    // TODO : navigate to the player component
+    PlayerManager.playPlaylist(this.playlist, this.audio);
   }
 
   /**
@@ -74,6 +87,55 @@ export class PlaylistComponent extends BaseComponent {
    * @param pos Position of the track to open.
    */
   public openTrack(pos: number): void {
-    // TODO : navigate to the track component
+    // TODO : navigate to the track component correctly ?
+    this.router.navigateTo('track', this.playlist.tracks[pos]);
+  }
+
+  /**
+   * Render the list of tracks.
+   * @return UI for the list of tracks.
+   */
+  private renderTracks(): void {
+    const tracks = document.getElementById('tracks-ul');
+    tracks.innerHTML = PlaylistComponent.trackListTemplate({ playlist: this.playlist });
+    tracks.querySelectorAll('.list-group-item').forEach((track: Element) => {
+      track.addEventListener('click', () => {
+        this.openTrack(+(track as HTMLElement).dataset.index);
+      });
+      track.addEventListener('dragstart', (event: DragEvent) => {
+        event.dataTransfer.setData('oldPos', (track as HTMLElement).dataset.index);
+      });
+      track.addEventListener('dragover', (event: DragEvent) => {
+        event.preventDefault();
+      });
+      track.addEventListener('drop', (event: DragEvent) => {
+        event.preventDefault();
+        this.moveTrack(+event.dataTransfer.getData('oldPos'), +(track as HTMLElement).dataset.index);
+      });
+    });
+    tracks.querySelectorAll('.delete-track').forEach((element: Element) => {
+      element.addEventListener('click', (event: Event) => {
+        this.removeTrack(+(element as HTMLElement).dataset.index);
+        event.stopPropagation();
+      });
+    });
+  }
+
+  /**
+   * Render the playlist's info.
+   * @return UI for the playlist's info.
+   */
+  private renderPlaylistInfo(): void {
+    const playlistInfo = document.getElementById('playlist-info');
+    playlistInfo.innerHTML = PlaylistComponent.playlistInfoTemplate({
+      playlist: this.playlist,
+      plural: this.playlist.tracks.length > 1
+    });
+    playlistInfo.querySelector('#delete-playlist').addEventListener('click', () => {
+      this.deletePlaylist();
+    });
+    playlistInfo.querySelector('#play-playlist').addEventListener('click', () => {
+      this.playPlaylist();
+    });
   }
 }

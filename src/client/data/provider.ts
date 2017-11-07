@@ -2,7 +2,7 @@
  * Enumeration of music providers.
  */
 export enum Provider {
-  SOUNDCLOUD = 'soundcloud',
+  JAMENDO = 'jamendo',
   SPOTIFY = 'spotify',
   DEEZER = 'deezer'
 }
