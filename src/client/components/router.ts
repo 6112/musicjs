@@ -22,6 +22,7 @@ export class Router extends Emitter {
   public constructor(private defaultComponent: Component) {
     super();
     this.register(defaultComponent);
+    window.addEventListener('popstate', this.onPopState.bind(this));
   }
 
   /**
@@ -46,7 +47,7 @@ export class Router extends Emitter {
     }
     this.currentComponent = this.components.get(id) || this.defaultComponent;
     this.currentComponent.show(payload);
-    this.updateUrl();
+    this.updateUrl(payload);
     this.dispatchRouteEvent();
   }
 
@@ -61,10 +62,19 @@ export class Router extends Emitter {
   }
 
   /**
+   * Called when the navigates in the history, e.g. by hitting the browser's
+   * "back" button.
+   */
+  private onPopState(event: PopStateEvent): void {
+    console.log(window.location.pathname, event.state);
+  }
+
+  /**
    * Update the URL.
    */
-  private updateUrl(): void {
-    window.history.pushState(
-      {}, this.currentComponent.title, '/' + this.currentComponent.id);
+  private updateUrl(payload: {}): void {
+    window.history.pushState(payload || null,
+                             this.currentComponent.title,
+                             '/' + this.currentComponent.id);
   }
 }

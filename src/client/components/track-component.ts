@@ -11,7 +11,7 @@ export class TrackComponent extends BaseComponent {
   /**
    * Template for the HTML to display.
    */
-  private static trackTemplate = Handlebars.template(
+  private static trackTemplate = Handlebars.compile(
     document.getElementById('track-template').innerHTML);
 
   /**
@@ -38,7 +38,7 @@ export class TrackComponent extends BaseComponent {
     super.show(payload);
     this.track = payload;
     this.wrapper.innerHTML =
-      SearchComponent.trackTemplate(track);
+      TrackComponent.trackTemplate(this.track);
   }
 
   /**

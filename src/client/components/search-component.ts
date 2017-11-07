@@ -84,16 +84,17 @@ export class SearchComponent extends BaseComponent {
     }
   }
 
-  private attachEvents(tracks: Track[]): void {
+  private attachEvents(): void {
     const anchors = this.searchResults.querySelectorAll('.list-group-item');
     for (const anchor of anchors) {
       anchor.addEventListener('click', () => {
-        this.openTrack(this.tracks[+anchor.dataset.index]);
+        const el = anchor as HTMLElement;
+        this.openTrack(this.tracks[+el.dataset.index]);
       });
     }
   }
 
-  private openTrack(track: Track[]): void {
+  private openTrack(track: Track): void {
     // TODO
   }
 
