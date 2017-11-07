@@ -19,24 +19,9 @@ export class PlaylistComponent extends BaseComponent {
     document.getElementById('playlist-info-template').innerHTML);
 
   /**
-   * UI for the list of tracks.
-   */
-  private tracks: HTMLElement;
-
-  /**
    * Playlist which details are shown.
    */
   private playlist: Playlist;
-
-  /**
-   * UI for the delete button.
-   */
-  private deleteButton: HTMLElement;
-
-  /**
-   * UI for the playlist's info.
-   */
-  private playlistInfo: HTMLElement;
 
   public constructor() {
     super('playlist', 'Liste de reproduction');
@@ -49,22 +34,8 @@ export class PlaylistComponent extends BaseComponent {
   public show(payload: Playlist) {
     super.show(payload);
     this.playlist = payload;
-
-    this.playlistInfo = document.getElementById('playlist-info');
-    this.playlistInfo.innerHTML = this.renderPlaylistInfo();
-
-    this.tracks = document.getElementById('tracks-ul');
-    this.tracks.innerHTML = this.renderTracks();
-    this.tracks.querySelectorAll('.list-group-item').forEach((track: Element) => {
-      track.addEventListener('click', () => {
-        this.openTrack(+(track as HTMLElement).dataset.index);
-      });
-    });
-
-    this.deleteButton = document.getElementById('delete-playlist');
-    this.deleteButton.addEventListener('click', () => {
-      this.deletePlaylist();
-    });
+    this.renderPlaylistInfo();
+    this.renderTracks();
   }
 
   /**
@@ -83,8 +54,9 @@ export class PlaylistComponent extends BaseComponent {
    */
   public removeTrack(pos: number): void {
     if (confirm('Ëtes-vous sûr de vouloir enlever cette chanson ?')) {
-      PlaylistManager.removeTrack(this.playlist, pos);
-      // TODO : re-render the list of tracks
+      this.playlist = PlaylistManager.removeTrack(this.playlist, pos);
+      this.renderTracks();
+      this.renderPlaylistInfo();
     }
   }
 
@@ -94,15 +66,15 @@ export class PlaylistComponent extends BaseComponent {
    * @param newPos New position of the track.
    */
   public moveTrack(oldPos: number, newPos: number): void {
-    PlaylistManager.moveTrack(this.playlist, oldPos, newPos);
-    // TODO : re-render the list of tracks ?
+    this.playlist = PlaylistManager.moveTrack(this.playlist, oldPos, newPos);
+    this.renderTracks();
   }
 
   /**
    * Navigate to the PlayerComponent.
    */
   public playPlaylist(): void {
-    // TODO : navigate to the player component
+    // TODO : play the playlist by calling the PlayerManager
   }
 
   /**
@@ -110,7 +82,7 @@ export class PlaylistComponent extends BaseComponent {
    * @param pos Position of the track to open.
    */
   public openTrack(pos: number): void {
-    // TODO : navigate to the track component
+    // TODO : navigate to the track component correctly ?
     this.router.navigateTo('track', this.playlist.tracks[pos]);
   }
 
@@ -118,15 +90,47 @@ export class PlaylistComponent extends BaseComponent {
    * Render the list of tracks.
    * @return UI for the list of tracks.
    */
-  private renderTracks(): string {
-    return PlaylistComponent.trackListTemplate({ playlist: this.playlist });
+  private renderTracks(): void {
+    const tracks = document.getElementById('tracks-ul');
+    tracks.innerHTML = PlaylistComponent.trackListTemplate({ playlist: this.playlist });
+    tracks.querySelectorAll('.list-group-item').forEach((track: Element) => {
+      track.addEventListener('click', () => {
+        this.openTrack(+(track as HTMLElement).dataset.index);
+      });
+      track.addEventListener('dragstart', (event: DragEvent) => {
+        event.dataTransfer.setData('oldPos', (track as HTMLElement).dataset.index);
+      });
+      track.addEventListener('dragover', (event: DragEvent) => {
+        event.preventDefault();
+      });
+      track.addEventListener('drop', (event: DragEvent) => {
+        event.preventDefault();
+        this.moveTrack(+event.dataTransfer.getData('oldPos'), +(track as HTMLElement).dataset.index);
+      });
+    });
+    tracks.querySelectorAll('.delete-track').forEach((element: Element) => {
+      element.addEventListener('click', (event: Event) => {
+        this.removeTrack(+(element as HTMLElement).dataset.index);
+        event.stopPropagation();
+      });
+    });
   }
 
   /**
    * Render the playlist's info.
    * @return UI for the playlist's info.
    */
-  private renderPlaylistInfo(): string {
-    return PlaylistComponent.playlistInfoTemplate({ playlist: this.playlist });
+  private renderPlaylistInfo(): void {
+    const playlistInfo = document.getElementById('playlist-info');
+    playlistInfo.innerHTML = PlaylistComponent.playlistInfoTemplate({
+      playlist: this.playlist,
+      plural: this.playlist.tracks.length > 1
+    });
+    playlistInfo.querySelector('#delete-playlist').addEventListener('click', () => {
+      this.deletePlaylist();
+    });
+    playlistInfo.querySelector('#play-playlist').addEventListener('click', () => {
+      this.playPlaylist();
+    });
   }
 }
