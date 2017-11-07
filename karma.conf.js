@@ -9,7 +9,7 @@ module.exports = function(config) {
     exclude: [
     ],
     preprocessors: {
-      'dist/browser/**/*.js': ['coverage']
+      'dist/browser/**/!(*spec).js': ['coverage']
     },
     reporters: ['progress', 'coverage'],
     browsers: ['Chrome'],
