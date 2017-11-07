@@ -58,8 +58,8 @@ export class PlaylistListComponent extends BaseComponent {
    * Show the component.
    * @param _ unused.
    */
-  public show(_: {}): void {
-    super.show(_);
+  public show(): void {
+    super.show();
     this.playlists = PlaylistManager.loadPlaylists();
     this.renderPlaylistList();
   }

@@ -21,6 +21,7 @@ export class TrackComponent extends BaseComponent {
    * @param payload Track which details are shown.
    */
   public show(payload: Track) {
+    super.show(payload);
     this.track = payload;
   }
 
