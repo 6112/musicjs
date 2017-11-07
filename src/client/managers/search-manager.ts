@@ -31,7 +31,7 @@ export class SearchManager {
   public constructor(fetcher: Fetcher, tokenManager: SpotifyTokenManager) {
     this.spotifyApi = new SpotifyApi(fetcher, tokenManager);
     this.soundcloudApi = new SoundCloudApi();
-    this.deezerApi = new DeezerApi();
+    this.deezerApi = new DeezerApi(fetcher);
   }
 
   /**

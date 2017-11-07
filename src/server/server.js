@@ -4,6 +4,7 @@ const express = require('express');
 const path = require('path');
 
 const spotify = require('./lib/spotify');
+const deezer = require('./lib/deezer');
 
 const PORT = 3000;
 
@@ -16,6 +17,14 @@ function init() {
     }).catch((err) => {
       res.status(500).send(err.message);
     });
+  });
+
+  app.get('/deezer_search', (req, res) => {
+    deezer.search(req.query.text).then((results) => {
+      res.send(results);
+    }).catch((err) => {
+      res.status(500).send(err.message);
+    })
   });
 
   app.use(express.static(path.resolve(__dirname, 'public')));
