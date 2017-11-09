@@ -14,7 +14,6 @@ module.exports = function(config) {
     reporters: ['progress', 'coverage'],
     browsers: ['Chrome'],
     singleRun: true,
-    browserNoActivityTimeout: 70000,
     coverageReporter: {
       dir: 'dist/coverage',
       includeAllSources: true,
