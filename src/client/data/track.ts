@@ -22,10 +22,11 @@ export class Track {
                      parsed.length, parsed.uri, parsed.provider);
   }
 
-  /**n
+  /**
    * Create a new track.
    * @param title Title of the track.
    * @param artist Artist of the track.
+   * @param album Name of the album of the track.
    * @param length Length of the track in seconds.
    * @param uri URI to the audio file for the track.
    * @param provider Provider of the track.

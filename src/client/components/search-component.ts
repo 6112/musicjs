@@ -78,12 +78,14 @@ export class SearchComponent extends BaseComponent {
       // Search field empty. Nothing to do.
     } else {
       this.tracks = await this.searchManager.search(val);
-      this.searchResults.innerHTML =
-        SearchComponent.renderTrackList(this.tracks);
+      this.searchResults.innerHTML = SearchComponent.renderTrackList(this.tracks);
       this.attachEvents();
     }
   }
 
+  /**
+   * Attach click events to the search results.
+   */
   private attachEvents(): void {
     const anchors = this.searchResults.querySelectorAll('.list-group-item');
     for (const anchor of anchors) {
@@ -94,6 +96,10 @@ export class SearchComponent extends BaseComponent {
     }
   }
 
+  /**
+   * Open the TrackComponent of the given track.
+   * @param track Track to open.
+   */
   private openTrack(track: Track): void {
     // TODO
   }

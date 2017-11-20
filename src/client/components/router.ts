@@ -23,7 +23,9 @@ export class Router extends Emitter {
   public constructor(private defaultComponent: Component) {
     super();
     this.register(defaultComponent);
-    window.addEventListener('popstate', this.onPopState.bind(this));
+    window.addEventListener('popstate', (event) => {
+      this.onPopState(event);
+    });
   }
 
   /**
@@ -78,7 +80,7 @@ export class Router extends Emitter {
    */
   private onPopState(event: PopStateEvent): void {
     const id = window.location.pathname.substr(1);
-    const payload = event.state;
+    const payload = event.state as {};
     this.showComponent(id, payload);
     this.dispatchRouteEvent();
   }

@@ -37,8 +37,7 @@ export class TrackComponent extends BaseComponent {
   public show(payload: Track) {
     super.show(payload);
     this.track = payload;
-    this.wrapper.innerHTML =
-      TrackComponent.trackTemplate(this.track);
+    this.wrapper.innerHTML = TrackComponent.trackTemplate(this.track);
   }
 
   /**

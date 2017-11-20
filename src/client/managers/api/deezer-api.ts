@@ -19,7 +19,7 @@ export class DeezerApi implements MusicApi {
    */
   private static deserialize(json: SearchResponse): Track[] {
     return json.data.map((track: RawTrack) =>
-      new Track(track.title, track.artist.name, track.album.name, track.duration, track.preview, Provider.DEEZER)
+      new Track(track.title, track.artist.name, track.album.title, track.duration, track.preview, Provider.DEEZER)
     );
   }
 
@@ -72,5 +72,5 @@ interface Artist {
  * Album object sent by the Deezer API.
  */
 interface Album {
-  name: string;
+  title: string;
 }

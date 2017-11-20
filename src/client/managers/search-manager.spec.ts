@@ -23,6 +23,20 @@ QUnit.test('should search through all the APIs', async (assert) => {
               }
             }
           ],
+          album: {
+            id: '',
+            name: '',
+            external_urls: {
+              spotify: ''
+            },
+            images: [
+              {
+                height: 0,
+                width: 0,
+                url: ''
+              }
+            ]
+          },
           duration_ms: 0,
           preview_url: 'something',
           external_urls: {
@@ -37,6 +51,7 @@ QUnit.test('should search through all the APIs', async (assert) => {
         name: '',
         artist_name: '',
         duration: 0,
+        album_name: '',
         audio: 'something'
       }
     ],
@@ -46,6 +61,9 @@ QUnit.test('should search through all the APIs', async (assert) => {
         preview: 'something',
         artist: {
           name: ''
+        },
+        album: {
+          title: ''
         },
         duration: 0
       }
