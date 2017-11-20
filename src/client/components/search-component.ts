@@ -101,7 +101,7 @@ export class SearchComponent extends BaseComponent {
    * @param track Track to open.
    */
   private openTrack(track: Track): void {
-    // TODO
+    this.router.navigateTo('track', track);
   }
 
   /**

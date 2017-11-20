@@ -97,14 +97,21 @@
           <template id="track-template">
             <div class="card">
               <div class="card-body">
-                <h4 class="card-title">{{title}}</h4>
-                <h6 class="card-subtitle mb-2 text-muted">{{artist}}</h6>
-                {{album}}
-                <a href="card-link" href="#">Jouer</a>
+                <h4 class="card-title">{{track.title}}</h4>
+                <h6 class="card-subtitle mb-2 text-muted">{{track.artist}}, {{track.album}}</h6>
+                <button type="button" class="btn btn-primary mb-3" id="play-track">Jouer la chanson</button>
+                <div class="form-row">
+                    <select class="custom-select mr-3" id="select-playlist">
+                        <option value="" disabled selected>Sélectionne une liste de reproduction</option>
+                      {{#each playlists}}
+                        <option value="{{@index}}">{{name}}</option>
+                      {{/each}}
+                    </select>
+                    <button type="button" class="btn btn-primary" id="add-to-playlist">Ajouter à la liste de reproduction</button>    
+                </div>
               </div>
             </div>
           </template>
-
       </div>
     </main>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.js"></script>

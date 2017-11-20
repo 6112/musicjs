@@ -11,14 +11,28 @@ export class TrackComponent extends BaseComponent {
   /**
    * Template for the HTML to display.
    */
-  private static trackTemplate = Handlebars.compile(
-    document.getElementById('track-template').innerHTML);
+  private static trackTemplate = Handlebars.compile(document.getElementById('track-template').innerHTML);
+
+  /**
+   * Loads the list of playlists
+   */
+  public static loadPlaylists(): Playlist[] {
+    return PlaylistManager.loadPlaylists();
+  }
 
   /**
    * Track which details are shown.
    */
   private track: Track;
 
+  /**
+   * Loaded playlists.
+   */
+  private playlists: Playlist[];
+
+  /**
+   * UI of the track.
+   */
   private wrapper: HTMLElement;
 
   /**
@@ -37,7 +51,17 @@ export class TrackComponent extends BaseComponent {
   public show(payload: Track) {
     super.show(payload);
     this.track = payload;
-    this.wrapper.innerHTML = TrackComponent.trackTemplate(this.track);
+    this.playlists = TrackComponent.loadPlaylists();
+    this.wrapper.innerHTML = TrackComponent.trackTemplate({ track: this.track, playlists: this.playlists});
+    document.getElementById('play-track').addEventListener('click', () => {
+      this.playTrack();
+    });
+    document.getElementById('add-to-playlist').addEventListener('click', () => {
+      const select = document.getElementById('select-playlist') as HTMLSelectElement;
+      if (select.value) {
+        this.addToPlaylist(this.playlists[+select.value]);
+      }
+    });
   }
 
   /**
@@ -46,13 +70,6 @@ export class TrackComponent extends BaseComponent {
    */
   public addToPlaylist(playlist: Playlist): void {
     PlaylistManager.addToPlaylist(this.track, playlist);
-  }
-
-  /**
-   * Loads the list of playlists
-   */
-  public loadPlaylists(): void {
-    PlaylistManager.loadPlaylists();
   }
 
   /**
