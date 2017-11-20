@@ -3,6 +3,7 @@ import { Track } from '../data/track';
 
 export interface Audio {
   src: string;
+  paused: boolean;
   play(): void;
   pause(): void;
   addEventListener(type: string, listener: EventListenerOrEventListenerObject, useCapture?: boolean): void;
@@ -28,7 +29,7 @@ export class PlayerManager {
    * @param done Optional callback called when the track is done playing.
    */
   public static playTrack(track: Track, audio: Audio, done?: () => void): void {
-    if (audio) {
+    if (!audio.paused) {
       audio.pause();
     }
     audio.src = track.uri;

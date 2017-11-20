@@ -24,15 +24,21 @@ class MockAudio extends Emitter implements Audio  {
   private timeout: NodeJS.Timer;
 
   /**
+   * Indicates if the player is paused.
+   */
+  public paused = true;
+
+  /**
    * Play the track.
    */
-  public play(): void {
+  public async play(): Promise<void> {
     this.timeout = setTimeout(
       () => {
         this.dispatchEvent(new CustomEvent('ended'));
       },
       MockAudio.DELAY
     );
+    this.paused = false;
   }
 
   /**
@@ -42,6 +48,7 @@ class MockAudio extends Emitter implements Audio  {
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
+    this.paused = true;
   }
 
   /**

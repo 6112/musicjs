@@ -87,7 +87,6 @@ export class PlaylistComponent extends BaseComponent {
    * @param pos Position of the track to open.
    */
   public openTrack(pos: number): void {
-    // TODO : navigate to the track component correctly ?
     this.router.navigateTo('track', this.playlist.tracks[pos]);
   }
 
