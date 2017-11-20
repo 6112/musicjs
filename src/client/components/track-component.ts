@@ -9,9 +9,17 @@ import { PlayerManager } from '../managers/player-manager';
  */
 export class TrackComponent extends BaseComponent {
   /**
+   * Template for the HTML to display.
+   */
+  private static trackTemplate = Handlebars.compile(
+    document.getElementById('track-template').innerHTML);
+
+  /**
    * Track which details are shown.
    */
   private track: Track;
+
+  private wrapper: HTMLElement;
 
   /**
    * Constructor.
@@ -19,6 +27,7 @@ export class TrackComponent extends BaseComponent {
    */
   public constructor(private audio: HTMLAudioElement) {
     super('track', 'Chanson');
+    this.wrapper = document.getElementById('track');
   }
 
   /**
@@ -28,6 +37,8 @@ export class TrackComponent extends BaseComponent {
   public show(payload: Track) {
     super.show(payload);
     this.track = payload;
+    this.wrapper.innerHTML =
+      TrackComponent.trackTemplate(this.track);
   }
 
   /**

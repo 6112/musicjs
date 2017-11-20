@@ -29,9 +29,10 @@
             {{#if tracks.length}}
               <ul class="list-group">
                 {{#each tracks}}
-                  <li class="list-group-item">
-                    <img src="/img/{{provider}}.png" width="24" height="24" class="float-right m1-1" />
-                    <a href="{{uri}}" target="_blank" rel="noopener noreferrer">{{artist}} — {{title}}</a>
+                  <li class="list-group-item" data-index="{{@index}}">
+                    <img src="/img/{{provider}}.png"
+                         width="24" height="24" class="float-right m1-1" />
+                    {{artist}} — {{title}}
                   </li>
                 {{/each}}
               </ul>
@@ -90,6 +91,20 @@
             {{/if}}
           </template>
         </div>
+      </div>
+
+      <div class="container" id="track" hidden>
+          <template id="track-template">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">{{title}}</h4>
+                <h6 class="card-subtitle mb-2 text-muted">{{artist}}</h6>
+                {{album}}
+                <a href="card-link" href="#">Jouer</a>
+              </div>
+            </div>
+          </template>
+
       </div>
     </main>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.js"></script>

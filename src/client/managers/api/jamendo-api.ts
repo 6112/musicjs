@@ -24,7 +24,7 @@ export class JamendoApi implements MusicApi {
    */
   private static deserialize(json: SearchResponse): Track[] {
     return json.results.map((track: RawTrack) =>
-      new Track(track.name, track.artist_name, track.duration, track.audio, Provider.JAMENDO)
+      new Track(track.name, track.artist_name, track.album_name, track.duration, track.audio, Provider.JAMENDO)
     );
   }
 
@@ -61,6 +61,7 @@ interface SearchResponse {
 interface RawTrack {
   name: string;
   artist_name: string;
+  album_name: string;
   duration: number;
   audio: string;
 }
