@@ -4,13 +4,22 @@ const typedoc = require('gulp-typedoc');
 const del = require('del');
 
 const browserTsProject = ts.createProject('tsconfig/browser.json');
+const serverTsProject = ts.createProject('tsconfig/server.json');
 const understandTsProject = ts.createProject('tsconfig/understand.json');
 
-gulp.task('default', () => {
+gulp.task('browser', () => {
   return browserTsProject.src()
     .pipe(browserTsProject())
     .js.pipe(gulp.dest('./dist/browser'));
 });
+
+gulp.task('server', () => {
+  return serverTsProject.src()
+    .pipe(serverTsProject())
+    .js.pipe(gulp.dest('./dist/server'));
+});
+
+gulp.task('default', ['browser', 'server']);
 
 gulp.task('understand', () => {
   return understandTsProject.src()

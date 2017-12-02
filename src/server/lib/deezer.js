@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
 
 const SEARCH_URL = 'https://api.deezer.com/search';
 

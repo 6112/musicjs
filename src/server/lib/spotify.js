@@ -1,4 +1,4 @@
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
 
 const CLIENT_ID = 'af1d0f4923bc4391a7bcd1f14f66a051';
 const CLIENT_SECRET = 'e281a32169f54b0685179322910ceca2';

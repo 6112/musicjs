@@ -1,0 +1,12 @@
+{
+  "include": [
+    "../src/server/"
+  ],
+  "compilerOptions": {
+    "outDir": "../dist/server",
+    "noImplicitAny": false,
+    "module": "commonjs",
+    "target": "es2016",
+    "allowJs": true
+  }
+}
