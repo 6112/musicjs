@@ -16,7 +16,7 @@ export class TrackComponent extends BaseComponent {
   /**
    * Loads the list of playlists
    */
-  public static loadPlaylists(): Playlist[] {
+  public static async loadPlaylists(): Promise<Playlist[]> {
     return PlaylistManager.loadPlaylists();
   }
 
@@ -48,18 +48,18 @@ export class TrackComponent extends BaseComponent {
    * Display the component.
    * @param payload Track which details are shown.
    */
-  public show(payload: Track) {
+  public async show(payload: Track): Promise<void> {
     super.show(payload);
     this.track = payload;
-    this.playlists = TrackComponent.loadPlaylists();
+    this.playlists = await TrackComponent.loadPlaylists();
     this.wrapper.innerHTML = TrackComponent.trackTemplate({ track: this.track, playlists: this.playlists});
     document.getElementById('play-track').addEventListener('click', () => {
       this.playTrack();
     });
-    document.getElementById('add-to-playlist').addEventListener('click', () => {
+    document.getElementById('add-to-playlist').addEventListener('click', async () => {
       const select = document.getElementById('select-playlist') as HTMLSelectElement;
       if (select.value) {
-        this.addToPlaylist(this.playlists[+select.value]);
+        await this.addToPlaylist(this.playlists[+select.value]);
       }
     });
   }
@@ -68,8 +68,8 @@ export class TrackComponent extends BaseComponent {
    * Add the track to the given playlist.
    * @param playlist Playlist to add the track to.
    */
-  public addToPlaylist(playlist: Playlist): void {
-    PlaylistManager.addToPlaylist(this.track, playlist);
+  public async addToPlaylist(playlist: Playlist): Promise<void> {
+    await PlaylistManager.addToPlaylist(this.track, playlist);
   }
 
   /**

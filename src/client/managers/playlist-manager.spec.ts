@@ -1,3 +1,4 @@
+/*
 import { Playlist } from '../data/playlist';
 import { Track } from '../data/track';
 import { Provider } from '../data/provider';
@@ -118,3 +119,4 @@ QUnit.test('should move tracks in playlists correctly', (assert) => {
   });
   assert.deepEqual(PlaylistManager.loadPlaylists(), []);
 });
+*/

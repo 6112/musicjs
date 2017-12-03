@@ -46,9 +46,9 @@ export class PlaylistComponent extends BaseComponent {
   /**
    * Delete the playlist.
    */
-  public deletePlaylist(): void {
+  public async deletePlaylist(): Promise<void> {
     if (confirm('Êtes-vous sûr de vouloir supprimer cette liste de reproduction ?')) {
-      PlaylistManager.deletePlaylist(this.playlist);
+      await PlaylistManager.deletePlaylist(this.playlist);
       this.router.navigateTo('playlist-list');
     }
   }
@@ -57,9 +57,9 @@ export class PlaylistComponent extends BaseComponent {
    * Remove a track from the playlist
    * @param pos Position of the track in the playlist.
    */
-  public removeTrack(pos: number): void {
+  public async removeTrack(pos: number): Promise<void> {
     if (confirm('Ëtes-vous sûr de vouloir enlever cette chanson ?')) {
-      this.playlist = PlaylistManager.removeTrack(this.playlist, pos);
+      this.playlist = await PlaylistManager.removeTrack(this.playlist, pos);
       this.renderTracks();
       this.renderPlaylistInfo();
     }
@@ -70,8 +70,8 @@ export class PlaylistComponent extends BaseComponent {
    * @param oldPos Old position of the track.
    * @param newPos New position of the track.
    */
-  public moveTrack(oldPos: number, newPos: number): void {
-    this.playlist = PlaylistManager.moveTrack(this.playlist, oldPos, newPos);
+  public async moveTrack(oldPos: number, newPos: number): Promise<void> {
+    this.playlist = await PlaylistManager.moveTrack(this.playlist, oldPos, newPos);
     this.renderTracks();
   }
 
@@ -107,15 +107,15 @@ export class PlaylistComponent extends BaseComponent {
       track.addEventListener('dragover', (event: DragEvent) => {
         event.preventDefault();
       });
-      track.addEventListener('drop', (event: DragEvent) => {
+      track.addEventListener('drop', async (event: DragEvent) => {
         event.preventDefault();
-        this.moveTrack(+event.dataTransfer.getData('oldPos'), +(track as HTMLElement).dataset.index);
+        await this.moveTrack(+event.dataTransfer.getData('oldPos'), +(track as HTMLElement).dataset.index);
       });
     });
     tracks.querySelectorAll('.delete-track').forEach((element: Element) => {
-      element.addEventListener('click', (event: Event) => {
-        this.removeTrack(+(element as HTMLElement).dataset.index);
+      element.addEventListener('click', async (event: Event) => {
         event.stopPropagation();
+        await this.removeTrack(+(element as HTMLElement).dataset.index);
       });
     });
   }
@@ -130,8 +130,8 @@ export class PlaylistComponent extends BaseComponent {
       playlist: this.playlist,
       plural: this.playlist.tracks.length > 1
     });
-    playlistInfo.querySelector('#delete-playlist').addEventListener('click', () => {
-      this.deletePlaylist();
+    playlistInfo.querySelector('#delete-playlist').addEventListener('click', async () => {
+      await this.deletePlaylist();
     });
     playlistInfo.querySelector('#play-playlist').addEventListener('click', () => {
       this.playPlaylist();

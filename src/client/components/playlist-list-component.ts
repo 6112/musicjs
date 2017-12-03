@@ -49,17 +49,17 @@ export class PlaylistListComponent extends BaseComponent {
     this.addButton = document.getElementById('create-playlist-btn');
     this.inputGroup = document.getElementById('name-input-group');
     this.errorMessage = document.getElementById('add-playlist-error');
-    this.addButton.addEventListener('click', () => {
-      this.addPlaylist();
+    this.addButton.addEventListener('click', async () => {
+      await this.addPlaylist();
     });
   }
 
   /**
    * Show the component.
    */
-  public show(): void {
+  public async show(): Promise<void> {
     super.show();
-    this.playlists = PlaylistManager.loadPlaylists();
+    this.playlists = await PlaylistManager.loadPlaylists();
     this.renderPlaylistList();
   }
 
@@ -80,12 +80,12 @@ export class PlaylistListComponent extends BaseComponent {
   /**
    * Called when the user wants to add a new playlist.
    */
-  private addPlaylist(): void {
+  private async addPlaylist(): Promise<void> {
     try {
       this.nameInput.classList.remove('is-invalid');
       this.inputGroup.classList.remove('is-invalid');
-      const addedPlaylist = PlaylistManager.newPlaylist(this.nameInput.value);
-      this.playlists.push(addedPlaylist);
+      const newPlaylist = await PlaylistManager.newPlaylist(this.nameInput.value);
+      this.playlists.push(newPlaylist);
       this.nameInput.value = '';
       this.renderPlaylistList();
     } catch (err) {

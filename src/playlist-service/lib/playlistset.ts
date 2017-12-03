@@ -1,3 +1,7 @@
+import { LocalStorage } from 'node-localstorage';
+
+const localStorage = new LocalStorage('./.localstorage');
+
 enum Provider {
   JAMENDO = 'jamendo',
   SPOTIFY = 'spotify',
@@ -18,19 +22,22 @@ export interface Playlist {
   tracks: Track[];
 }
 
-let uid = 0;
-const playlistsets = new Map<number, Playlist[]>();
+function generateUid() {
+  const uid = parseInt(localStorage.getItem('uid')) || 1;
+  localStorage.setItem('uid', uid + 1);
+  return uid;
+}
 
 export function createPlaylistSet(playlists: Playlist[]): number {
-  const id = ++uid;
-  playlistsets.set(id, playlists);
+  const id = generateUid();
+  localStorage.setItem(id + '', JSON.stringify(playlists));
   return id;
 }
 
 export function getPlaylistSet(id: number): Playlist[] {
-  return playlistsets.get(id);
+  return JSON.parse(localStorage.getItem(id + ''));
 }
 
 export function updatePlaylistSet(id: number, playlists: Playlist[]): void {
-  playlistsets.set(id, playlists);
+  localStorage.setItem(id + '', JSON.stringify(playlists));
 }
