@@ -3,41 +3,39 @@
 import * as express from 'express';
 import * as path from 'path';
 
-import * as spotify from './lib/spotify';
-import * as deezer from './lib/deezer';
-
 const PORT = 3000;
 
-function init() {
-  const app = express();
+/**
+ * HTTP server for serving static files.
+ */
+class HttpServer {
+  /** Express app for listening on HTTP. */
+  private app: any;
 
-  // XXX
-  // app.get('/spotify_auth_token', (req, res) => {
-  //   spotify.getAuthToken().then((token) => {
-  //     res.send(token);
-  //   }).catch((err) => {
-  //     res.status(500).send(err.message);
-  //   });
-  // });
+  /**
+   * Constructor.
+   * @param port Port number to listen on.
+   */
+  constructor(private port: number) {
+    this.app = express();
 
-  // app.get('/deezer_search', (req, res) => {
-  //   deezer.search(req.query.text).then((results) => {
-  //     res.send(results);
-  //   }).catch((err) => {
-  //     res.status(500).send(err.message);
-  //   });
-  // });
+    this.app.use(express.static(path.resolve(__dirname, '../../public')));
+    this.app.use(express.static(path.resolve(__dirname, '../browser')));
 
-  app.use(express.static(path.resolve(__dirname, '../../public')));
-  app.use(express.static(path.resolve(__dirname, '../browser')));
+    this.app.use((req, res) => {
+      res.sendFile(path.resolve(__dirname, '../../public/index.html'));
+    });
+  }
 
-  app.use((req, res) => {
-    res.sendFile(path.resolve(__dirname, '../../public/index.html'));
-  });
-
-  app.listen(PORT, () => {
-    console.log(`server: listening on localhost:${PORT}`);
-  });
+  /**
+   * Launch the HTTP server.
+   */
+  public listen() {
+    this.app.listen(this.port, () => {
+      console.log(`server: listening on localhost:${PORT}`);
+    });
+  }
 }
 
-init();
+const server = new HttpServer(PORT);
+server.listen();

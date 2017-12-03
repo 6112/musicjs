@@ -8,15 +8,18 @@ const SEARCH_SERVICE_PORT = 6113;
  */
 export class SearchManager {
   /**
-   * Constructor. Sets up the music APIs.
-   * @param fetcher Fetcher that makes HTTP calls.
+   * Return the base URL for the search service (without a trailing slash).
    */
-  public constructor(private fetcher: Fetcher) {}
-
   private static getSearchServiceUrl(): string {
     const l = window.location;
     return `${l.protocol}//${l.hostname}:${SEARCH_SERVICE_PORT}`;
   }
+
+  /**
+   * Constructor. Sets up the music APIs.
+   * @param fetcher Fetcher that makes HTTP calls.
+   */
+  public constructor(private fetcher: Fetcher) {}
 
   /**
    * Searches the given text on the search service.
@@ -27,7 +30,7 @@ export class SearchManager {
     const encodedQuery = encodeURIComponent(text);
     const url = SearchManager.getSearchServiceUrl() + `/api/search?q=${encodedQuery}`;
     const response = await this.fetcher.fetch(url);
-    const json = await response.json();
-    return json.map((t: any) => Track.deserialize(t));
+    const json = await response.json() as string[];
+    return json.map((t) => Track.deserialize(t));
   }
 }
