@@ -5,7 +5,10 @@
   "main": "server.js",
   "scripts": {
     "test": "karma start karma.conf.js",
-    "start": "node src/server/server.js",
+    "start": "node dist/server/server.js",
+    "start-playlist-service": "node dist/playlist-service/playlist-service.js",
+    "start-search-service": "node dist/search-service/search-service.js",
+    "start-all": "node start-all.js",
     "doc": "gulp doc",
     "understand": "gulp understand",
     "build": "gulp",
@@ -17,6 +20,7 @@
   "dependencies": {
     "@types/qunit": "^2.0.31",
     "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "del": "^3.0.0",
     "express": "^4.16.2",
     "gulp": "^3.9.1",

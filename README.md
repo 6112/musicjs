@@ -2,7 +2,11 @@
 
 * `src/client`: client source code (TypeScript)
 * `src/server`: server source code (JavaScript) & public files
-* `dist/browser`: compiled JS files used on the client side
+* `src/playlist-service`: RESTful service for managing a set of Playlist objects
+* `src/search-service`: simple HTTP service for searching the Music APIs
+* `dist/browser`, `dist/server`, `dist/playlist-service` and
+  `dist/search-service`: compiled JS files used for different parts of the
+  program
 * `dist/coverage`: test coverage results (see generated `index.html`)
 * `dist/doc`: generated documentation (see generated `index.html`)
 * `dist/understand`: generated JS files for analyzing in Understand
@@ -36,13 +40,14 @@ And add the files from the `dist/understand` directory to the Understand project
 
 # Serving
 
-To run the HTTP server, just run:
+To run the HTTP server and REST services, just run:
 
 ```
-npm start
+npm start-all
 ```
 
-This will start a server listening on port 3000.
+This will start a server listening on port 3000, and services listening on ports
+6112 (playlist-service) and 6113 (search-service).
 
 # Generating Documentation
 
@@ -58,7 +63,9 @@ npm run doc
 npm run test
 ```
 
-This will run all the unit tests and will verify that the coverage is above 50% for statements and lines. Note that the coverage is calculated on the generated JavaScript files, and not the TypeScript files.
+This will run all the unit tests and will verify that the coverage is above 50%
+for statements and lines. Note that the coverage is calculated on the generated
+JavaScript files, and not the TypeScript files.
 
 # Cleaning
 

@@ -1,0 +1,12 @@
+{
+  "include": [
+    "../src/search-service/"
+  ],
+  "compilerOptions": {
+    "outDir": "../dist/search-service",
+    "noImplicitAny": false,
+    "module": "commonjs",
+    "target": "es2016",
+    "allowJs": true
+  }
+}

@@ -1,13 +1,13 @@
-import fetch from 'node-fetch';
+import * as fetch from 'node-fetch';
 
 const CLIENT_ID = 'af1d0f4923bc4391a7bcd1f14f66a051';
 const CLIENT_SECRET = 'e281a32169f54b0685179322910ceca2';
 
 const API_TOKEN_URL = 'https://accounts.spotify.com/api/token';
 
-let authToken = null;
+let authToken: string = null;
 
-function fetchAuthToken() {
+function fetchAuthToken(): Promise<string> {
   const base64ClientInfo = new Buffer(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64');
   return fetch(API_TOKEN_URL, {
     method: 'POST',
@@ -28,11 +28,9 @@ function fetchAuthToken() {
     });
 }
 
-module.exports = {
-  getAuthToken() {
-    if (authToken) {
-      return Promise.resolve(authToken);
-    }
-    return fetchAuthToken();
+export function getAuthToken(): Promise<string> {
+  if (authToken) {
+    return Promise.resolve(authToken);
   }
-};
+  return fetchAuthToken();
+}
