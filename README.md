@@ -43,7 +43,7 @@ And add the files from the `dist/understand` directory to the Understand project
 To run the HTTP server and REST services, just run:
 
 ```
-npm start-all
+npm run start-all
 ```
 
 This will start a server listening on port 3000, and services listening on ports

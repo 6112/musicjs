@@ -49,9 +49,9 @@ gulp.task('understand', () => {
 gulp.task('doc', () => {
   return gulp.src('src/**/*.ts')
     .pipe(typedoc({
-      module: 'amd',
+      module: 'commonjs',
       target: 'es2017',
-      noImplicitAny: true,
+      noImplicitAny: false,
       allowJs: true,
       out: './dist/doc'
     }));
