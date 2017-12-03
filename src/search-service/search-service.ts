@@ -3,6 +3,10 @@
 import * as express from 'express';
 import * as cors from 'cors';
 
+import { SearchManager } from './managers/search-manager';
+import { FetchApiFetcher } from './managers/api/fetch';
+import { SpotifyTokenManager } from './managers/api/spotify-api';
+
 const PORT = 6113;
 
 function init() {
@@ -10,11 +14,14 @@ function init() {
 
   app.use(cors());
 
-  app.get('/api/search/', (req, res) => {
+  const fetcher = new FetchApiFetcher();
+  const tokenManager = new SpotifyTokenManager();
+  const searchManager = new SearchManager(fetcher, tokenManager);
+
+  app.get('/api/search/', async (req, res) => {
     const query = req.query.q;
-    const results = [];
-    // TODO
-    res.json(results);
+    const results = await searchManager.search(query);
+    res.json(results.map(t => t.serialize()));
   });
 
   app.listen(PORT, () => {

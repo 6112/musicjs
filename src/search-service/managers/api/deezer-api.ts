@@ -10,7 +10,7 @@ export class DeezerApi implements MusicApi {
   /**
    * URL to use for searching.
    */
-  private static SEARCH_URL = '/deezer_search';
+  private static SEARCH_URL = 'https://api.deezer.com/search';
 
   /**
    * Transform a response from the API to a list of tracks.
@@ -36,7 +36,7 @@ export class DeezerApi implements MusicApi {
    */
   public async search(query: string): Promise<Track[]> {
     const encodedQuery = encodeURIComponent(query);
-    const url = `${DeezerApi.SEARCH_URL}?text=${encodedQuery}`;
+    const url = `${DeezerApi.SEARCH_URL}?q=${encodedQuery}`;
     const response = await this.fetcher.fetch(url);
     const json = await response.json();
     return DeezerApi.deserialize(json as SearchResponse);

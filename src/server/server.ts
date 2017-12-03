@@ -11,21 +11,22 @@ const PORT = 3000;
 function init() {
   const app = express();
 
-  app.get('/spotify_auth_token', (req, res) => {
-    spotify.getAuthToken().then((token) => {
-      res.send(token);
-    }).catch((err) => {
-      res.status(500).send(err.message);
-    });
-  });
+  // XXX
+  // app.get('/spotify_auth_token', (req, res) => {
+  //   spotify.getAuthToken().then((token) => {
+  //     res.send(token);
+  //   }).catch((err) => {
+  //     res.status(500).send(err.message);
+  //   });
+  // });
 
-  app.get('/deezer_search', (req, res) => {
-    deezer.search(req.query.text).then((results) => {
-      res.send(results);
-    }).catch((err) => {
-      res.status(500).send(err.message);
-    });
-  });
+  // app.get('/deezer_search', (req, res) => {
+  //   deezer.search(req.query.text).then((results) => {
+  //     res.send(results);
+  //   }).catch((err) => {
+  //     res.status(500).send(err.message);
+  //   });
+  // });
 
   app.use(express.static(path.resolve(__dirname, '../../public')));
   app.use(express.static(path.resolve(__dirname, '../browser')));

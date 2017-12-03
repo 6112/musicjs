@@ -1,3 +1,5 @@
+import * as fetch from 'node-fetch';
+
 import { Track } from '../../data/track';
 import { Provider } from '../../data/provider';
 import { Fetcher } from './fetch';
@@ -112,33 +114,39 @@ interface Image {
   url: string;
 }
 
-/**
- * Manages an API token and automatically refreshes it when needed. Singleton.
- */
-export class SpotifyTokenManager {
-  /**
-   * Auth token from the HTTP server.
-   */
-  private token: string = undefined;
+const CLIENT_ID = 'af1d0f4923bc4391a7bcd1f14f66a051';
+const CLIENT_SECRET = 'e281a32169f54b0685179322910ceca2';
 
-  /**
-   * Return an auth token that can be used when making requests to the Spotify
-   * API.
-   */
-  public async getToken(): Promise<string> {
-    if (this.token) {
-      // TODO: refresh token if it's expired
-      return this.token;
-    }
-    return this.refreshToken();
+const API_TOKEN_URL = 'https://accounts.spotify.com/api/token';
+
+export class SpotifyTokenManager {
+  private authToken: string = null;
+
+  private fetchAuthToken(): Promise<string> {
+    const base64ClientInfo = new Buffer(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64');
+    return fetch(API_TOKEN_URL, {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${base64ClientInfo}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: 'grant_type=client_credentials'
+    }).then((response) => response.json())
+      .then((json) => {
+        if (json.error) {
+          return Promise.reject(new Error(json.error));
+        }
+        this.authToken = json.access_token;
+        // refresh token when it expires
+        setTimeout(this.fetchAuthToken.bind(this), json.expires_in * 1000);
+        return this.authToken;
+      });
   }
 
-  /**
-   * Refresh the auth token if it's expired.
-   */
-  public async refreshToken(): Promise<string> {
-    const response = await fetch('/spotify_auth_token');
-    this.token = await response.text();
-    return this.token;
+  public getToken(): Promise<string> {
+    if (this.authToken) {
+      return Promise.resolve(this.authToken);
+    }
+    return this.fetchAuthToken();
   }
 }

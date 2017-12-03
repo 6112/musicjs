@@ -1,6 +1,5 @@
 import { Track } from '../data/track';
 import { FetchApiFetcher } from '../managers/api/fetch';
-import { SpotifyTokenManager } from '../managers/api/spotify-api';
 import { SearchManager } from '../managers/search-manager';
 import { BaseComponent } from './component';
 import { Debouncer } from './debouncer';
@@ -63,8 +62,7 @@ export class SearchComponent extends BaseComponent {
     this.searchResults = document.getElementById('search-results');
 
     const fetcher = new FetchApiFetcher();
-    const spotifyTokenManager = new SpotifyTokenManager();
-    this.searchManager = new SearchManager(fetcher, spotifyTokenManager);
+    this.searchManager = new SearchManager(fetcher);
 
     this.searchResults.innerHTML = SearchComponent.renderTrackList([]);
   }
