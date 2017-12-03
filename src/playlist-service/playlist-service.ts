@@ -4,7 +4,7 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 
-import { PlaylistListManager, Playlist } from './managers/playlist-list-manager';
+import { PlaylistListManager } from './managers/playlist-list-manager';
 
 const PORT = 6112;
 
@@ -40,7 +40,7 @@ class PlaylistService {
 
     // CREATE a new playlist list
     this.app.post('/api/playlistsets/', (req, res) => {
-      const id = PlaylistListManager.create(req.body as Playlist[]);
+      const id = PlaylistListManager.create(req.body as string[]);
       res.send(id + '');
     });
 
@@ -54,7 +54,7 @@ class PlaylistService {
     // UPDATE a playlist set
     this.app.put('/api/playlistsets/:id', (req, res) => {
       const id = parseInt(req.params.id);
-      PlaylistListManager.update(id, req.body as Playlist[]);
+      PlaylistListManager.update(id, req.body as string[]);
       res.send(id + '');
     });
   }

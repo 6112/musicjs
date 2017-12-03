@@ -2,29 +2,6 @@ import { LocalStorage } from 'node-localstorage';
 
 const localStorage = new LocalStorage('./.localstorage');
 
-enum Provider {
-  JAMENDO = 'jamendo',
-  SPOTIFY = 'spotify',
-  DEEZER = 'deezer'
-}
-
-interface Track {
-  title: string;
-  artist: string;
-  album: string;
-  length: number;
-  uri: string;
-  provider: Provider;
-}
-
-/**
- * Expected format for database entries.
- */
-export interface Playlist {
-  name: string;
-  tracks: Track[];
-}
-
 /**
  * Manages a database in which each element is a list of playlists. Uses
  * localStorage for persistency.
@@ -44,7 +21,7 @@ export class PlaylistListManager {
    * @param playlists Value to save in the database.
    * @return Unique ID that can be used to update or read from the new entry.
    */
-  public static create(playlists: Playlist[]): number {
+  public static create(playlists: string[]): number {
     const id = PlaylistListManager.generateUid();
     localStorage.setItem(id + '', JSON.stringify(playlists));
     return id;
@@ -55,7 +32,7 @@ export class PlaylistListManager {
    * @param id Unique ID of the entry to retrieve.
    * @return The value saved in the database.
    */
-  public static read(id: number): Playlist[] {
+  public static read(id: number): string[] {
     return JSON.parse(localStorage.getItem(id + ''));
   }
 
@@ -64,7 +41,7 @@ export class PlaylistListManager {
    * @param id Unique ID of the entry to update.
    * @param playlists New value to use in the database.
    */
-  public static update(id: number, playlists: Playlist[]): void {
+  public static update(id: number, playlists: string[]): void {
     localStorage.setItem(id + '', JSON.stringify(playlists));
   }
 }
