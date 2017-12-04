@@ -10,6 +10,13 @@ import { SpotifyTokenManager } from './managers/api/spotify-api';
 const PORT = 6113;
 
 /**
+ * Query of the search.
+ */
+interface Query {
+  q: string;
+}
+
+/**
  * A service for searching and aggregating data from multiple music
  * APIs. Exposes a simple HTTP interface.
  *
@@ -20,13 +27,13 @@ const PORT = 6113;
  */
 export class SearchService {
   /** Express app for listening on HTTP. */
-  private app: any;
+  private app: express.Express;
 
   /**
    * Constructor.
    * @param port Port number to listen on.
    */
-  constructor(private port: number) {
+  public constructor(private port: number) {
     this.app = express();
 
     this.app.use(cors());
@@ -36,9 +43,9 @@ export class SearchService {
     const searchManager = new SearchManager(fetcher, tokenManager);
 
     this.app.get('/api/search/', async (req, res) => {
-      const query = req.query.q;
+      const query = (req.query as Query).q;
       const results = await searchManager.search(query);
-      res.json(results.map(t => t.serialize()));
+      res.json(results.map((t) => t.serialize()));
     });
   }
 
@@ -46,9 +53,7 @@ export class SearchService {
    * Launch the HTTP server.
    */
   public listen() {
-    this.app.listen(this.port, () => {
-      console.log(`search-service: listening on localhost:${PORT}`);
-    });
+    this.app.listen(this.port);
   }
 }
 

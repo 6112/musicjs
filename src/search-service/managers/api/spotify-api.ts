@@ -119,31 +119,51 @@ const CLIENT_SECRET = 'e281a32169f54b0685179322910ceca2';
 
 const API_TOKEN_URL = 'https://accounts.spotify.com/api/token';
 
+interface TokenResponse {
+  error: string;
+  access_token: string;
+  expires_in: number;
+}
+
+const TIME_MULTIPLIER = 1000;
+
+/**
+ * Token Manager for Spotify.
+ */
 export class SpotifyTokenManager {
+  /**
+   * The authentication token.
+   */
   private authToken: string = null;
 
-  private fetchAuthToken(): Promise<string> {
+  /**
+   * Fetch an authentication token.
+   */
+  private async fetchAuthToken(): Promise<string> {
     const base64ClientInfo = new Buffer(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64');
-    return fetch(API_TOKEN_URL, {
+    const headers = new fetch.Headers();
+    headers.append('Authorization', `Basic ${base64ClientInfo}`);
+    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    return fetch.default(API_TOKEN_URL, {
       method: 'POST',
-      headers: {
-        Authorization: `Basic ${base64ClientInfo}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
+      headers,
       body: 'grant_type=client_credentials'
-    }).then((response) => response.json())
+    }).then(async (response) => response.json() as Promise<TokenResponse>)
       .then((json) => {
         if (json.error) {
-          return Promise.reject(new Error(json.error));
+          throw new Error(json.error);
         }
         this.authToken = json.access_token;
-        // refresh token when it expires
-        setTimeout(this.fetchAuthToken.bind(this), json.expires_in * 1000);
+        // Refresh token when it expires
+        setTimeout(this.fetchAuthToken.bind(this), json.expires_in * TIME_MULTIPLIER);
         return this.authToken;
       });
   }
 
-  public getToken(): Promise<string> {
+  /**
+   * Returns the token. Fetches one if needed.
+   */
+  public async getToken(): Promise<string> {
     if (this.authToken) {
       return Promise.resolve(this.authToken);
     }

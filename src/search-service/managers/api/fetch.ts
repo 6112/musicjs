@@ -1,4 +1,4 @@
-import * as fetch from 'node-fetch';
+import fetch, { Request, RequestInit, Response } from 'node-fetch';
 
 export interface Fetcher {
   /**
@@ -28,7 +28,7 @@ export class FetchApiFetcher implements Fetcher {
    */
   // tslint:disable-next-line:prefer-function-over-method
   public async fetch(url: string, init?: RequestInit, authToken?: string): Promise<Response> {
-    const request = new fetch.Request(url, init);
+    const request = new Request(url, init);
     if (authToken) {
       request.headers.set('Authorization', `Bearer ${authToken}`);
     }

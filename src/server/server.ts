@@ -10,13 +10,13 @@ const PORT = 3000;
  */
 class HttpServer {
   /** Express app for listening on HTTP. */
-  private app: any;
+  private app: express.Express;
 
   /**
    * Constructor.
    * @param port Port number to listen on.
    */
-  constructor(private port: number) {
+  public constructor(private port: number) {
     this.app = express();
 
     this.app.use(express.static(path.resolve(__dirname, '../../public')));
@@ -31,9 +31,7 @@ class HttpServer {
    * Launch the HTTP server.
    */
   public listen() {
-    this.app.listen(this.port, () => {
-      console.log(`server: listening on localhost:${PORT}`);
-    });
+    this.app.listen(this.port);
   }
 }
 

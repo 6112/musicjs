@@ -2,6 +2,9 @@ import { LocalStorage } from 'node-localstorage';
 
 const localStorage = new LocalStorage('./.localstorage');
 
+// Radix of the decimal base.
+const DECIMAL = 10;
+
 /**
  * Manages a database in which each element is a list of playlists. Uses
  * localStorage for persistency.
@@ -11,7 +14,7 @@ export class PlaylistListManager {
    * Generate a unique ID for use in the database.
    */
   private static generateUid(): number {
-    const uid = parseInt(localStorage.getItem('uid')) || 1;
+    const uid = parseInt(localStorage.getItem('uid'), DECIMAL) || 1;
     localStorage.setItem('uid', uid + 1);
     return uid;
   }
@@ -23,7 +26,7 @@ export class PlaylistListManager {
    */
   public static create(playlists: string[]): number {
     const id = PlaylistListManager.generateUid();
-    localStorage.setItem(id + '', JSON.stringify(playlists));
+    localStorage.setItem(`${id}`, JSON.stringify(playlists));
     return id;
   }
 
@@ -33,7 +36,7 @@ export class PlaylistListManager {
    * @return The value saved in the database.
    */
   public static read(id: number): string[] {
-    return JSON.parse(localStorage.getItem(id + ''));
+    return JSON.parse(localStorage.getItem(`${id}`)) as string[];
   }
 
   /**
@@ -42,6 +45,6 @@ export class PlaylistListManager {
    * @param playlists New value to use in the database.
    */
   public static update(id: number, playlists: string[]): void {
-    localStorage.setItem(id + '', JSON.stringify(playlists));
+    localStorage.setItem(`${id}`, JSON.stringify(playlists));
   }
 }

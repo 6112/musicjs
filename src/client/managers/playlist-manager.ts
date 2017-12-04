@@ -154,7 +154,11 @@ export class PlaylistManager {
       method: 'GET'
     });
     const json = await response.json() as string[];
-    PlaylistManager.playlists = json.map((playlist) => Playlist.deserialize(playlist));
+    if (json) {
+      PlaylistManager.playlists = json.map((playlist) => Playlist.deserialize(playlist));
+    } else {
+      PlaylistManager.playlists = [];
+    }
     return PlaylistManager.playlists.slice();
   }
 

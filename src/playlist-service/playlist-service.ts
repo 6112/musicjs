@@ -8,6 +8,19 @@ import { PlaylistListManager } from './managers/playlist-list-manager';
 
 const PORT = 6112;
 
+// Radix of the decimal base.
+const DECIMAL = 10;
+
+/**
+ * Parameters of some queries.
+ */
+interface Params {
+  /**
+   * ID of the session.
+   */
+  id: string;
+}
+
 /**
  * A service for persisting playlists to a database that exposes a simple
  * RESTful JSON HTTP interface.
@@ -24,38 +37,38 @@ const PORT = 6112;
  */
 class PlaylistService {
   /** Express app for listening on HTTP. */
-  private app: any;
+  private app: express.Express;
 
   /**
    * Constructor.
    * @param port Port number to listen on.
    */
-  constructor(private port: number) {
+  public constructor(private port: number) {
     this.app = express();
 
     this.app.use(bodyParser.json());
     this.app.use(cors());
 
-    // https://en.wikipedia.org/wiki/Representational_state_transfer#Relationship_between_URL_and_HTTP_methods
+    // See : https://en.wikipedia.org/wiki/Representational_state_transfer#Relationship_between_URL_and_HTTP_methods
 
     // CREATE a new playlist list
     this.app.post('/api/playlistsets/', (req, res) => {
       const id = PlaylistListManager.create(req.body as string[]);
-      res.send(id + '');
+      res.send(`${id}`);
     });
 
     // GET a playlist set
     this.app.get('/api/playlistsets/:id', (req, res) => {
-      const id = parseInt(req.params.id);
+      const id = parseInt((req.params as Params).id, DECIMAL);
       const playlists = PlaylistListManager.read(id);
       res.json(playlists);
     });
 
     // UPDATE a playlist set
     this.app.put('/api/playlistsets/:id', (req, res) => {
-      const id = parseInt(req.params.id);
+      const id = parseInt((req.params as Params).id, DECIMAL);
       PlaylistListManager.update(id, req.body as string[]);
-      res.send(id + '');
+      res.send(`${id}`);
     });
   }
 
@@ -63,9 +76,7 @@ class PlaylistService {
    * Launch the HTTP server.
    */
   public listen() {
-    this.app.listen(this.port, () => {
-      console.log(`playlist-service: listening on localhost:${PORT}`);
-    });
+    this.app.listen(this.port);
   }
 }
 

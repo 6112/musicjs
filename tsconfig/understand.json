@@ -1,6 +1,9 @@
 {
   "include": [
-    "../src/client/"
+    "../src/client/",
+    "../src/playlist-service",
+    "../src/search-service",
+    "../src/server"
   ],
   "compilerOptions": {
     "outDir": "../dist/understand",
